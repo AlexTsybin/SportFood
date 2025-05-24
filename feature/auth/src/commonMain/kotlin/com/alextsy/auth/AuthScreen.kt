@@ -13,10 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.alextsy.auth.component.GoogleButton
 import com.alextsy.shared.Alpha
 import com.alextsy.shared.BebasNeueFont
 import com.alextsy.shared.FontSize
+import com.alextsy.shared.Surface
 import com.alextsy.shared.TextPrimary
 import com.alextsy.shared.TextSecondary
 import rememberMessageBarState
@@ -35,10 +37,13 @@ fun AuthScreen(
                     bottom = padding.calculateBottomPadding()
                 ),
             messageBarState = messageBarState,
-            errorMaxLines = 2
+            errorMaxLines = 2,
+            contentBackgroundColor = Surface
         ) {
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp)
             ) {
                 Column(
                     modifier = Modifier.weight(1f),
