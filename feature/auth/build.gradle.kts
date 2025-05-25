@@ -46,6 +46,8 @@ kotlin {
 
             implementation(project(":shared"))
             implementation(libs.messagebar.kmp)
+            implementation(libs.auth.kmp)
+            implementation(libs.auth.firebase.kmp)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
