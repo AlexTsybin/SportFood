@@ -39,6 +39,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
+            implementation(project(":feature:auth"))
+            implementation(project(":data"))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
@@ -50,7 +52,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.alextsy.di"
+    namespace = "com.sportfood.di"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

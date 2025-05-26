@@ -40,9 +40,12 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(project(":shared"))
+            implementation(project(":data"))
             implementation(libs.messagebar.kmp)
             implementation(libs.auth.kmp)
             implementation(libs.auth.firebase.kmp)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -51,7 +54,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.alextsy.auth"
+    namespace = "com.sportfood.auth"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

@@ -30,12 +30,14 @@ import com.alextsy.shared.TextPrimary
 import com.alextsy.shared.TextSecondary
 import com.alextsy.shared.TextWhite
 import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
+import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
 
 @Composable
 fun AuthScreen(
 
 ) {
+    val viewModel = koinViewModel<AuthViewModel>()
     val messageBarState = rememberMessageBarState()
     var loadingState by remember { mutableStateOf(false) }
 
@@ -86,7 +88,11 @@ fun AuthScreen(
                     linkAccount = false,
                     onResult = { result ->
                         result.onSuccess { user ->
-                            signInOnSuccess(messageBarState)
+                            viewModel.createCustomer(
+                                user = user,
+                                onSuccess = { signInOnSuccess(messageBarState) },
+                                onError = { message -> messageBarState.addError(message) }
+                            )
                             loadingState = false
                         }.onFailure { error ->
                             signInOnFailure(error, messageBarState)

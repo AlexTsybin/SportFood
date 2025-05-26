@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -38,6 +39,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            implementation(libs.kotlinx.serialization)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -46,7 +49,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.alextsy.shared"
+    namespace = "com.sportfood.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

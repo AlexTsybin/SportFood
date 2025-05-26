@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -23,7 +22,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "navigation"
+            baseName = "data"
             isStatic = true
         }
     }
@@ -40,9 +39,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation(project(":feature:auth"))
-            implementation(libs.compose.navigation)
-            implementation(libs.kotlinx.serialization)
+            implementation(project(":shared"))
+            implementation(libs.firebase.firestore)
+            implementation(libs.auth.firebase.kmp)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -51,7 +50,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.sportfood.navigation"
+    namespace = "com.sportfood.data"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
