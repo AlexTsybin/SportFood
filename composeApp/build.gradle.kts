@@ -36,6 +36,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.splash.screen)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -49,6 +50,7 @@ kotlin {
 
             implementation(project(":navigation"))
             implementation(project(":shared"))
+            implementation(project(":di"))
             implementation(libs.auth.kmp)
             implementation(libs.firebase.app)
         }
