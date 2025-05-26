@@ -24,8 +24,11 @@ import com.alextsy.shared.Alpha
 import com.alextsy.shared.BebasNeueFont
 import com.alextsy.shared.FontSize
 import com.alextsy.shared.Surface
+import com.alextsy.shared.SurfaceBrand
+import com.alextsy.shared.SurfaceError
 import com.alextsy.shared.TextPrimary
 import com.alextsy.shared.TextSecondary
+import com.alextsy.shared.TextWhite
 import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
 import rememberMessageBarState
 
@@ -45,7 +48,11 @@ fun AuthScreen(
                 ),
             messageBarState = messageBarState,
             errorMaxLines = 2,
-            contentBackgroundColor = Surface
+            contentBackgroundColor = Surface,
+            errorContainerColor = SurfaceError,
+            errorContentColor = TextWhite,
+            successContainerColor = SurfaceBrand,
+            successContentColor = TextPrimary
         ) {
             Column(
                 modifier = Modifier
