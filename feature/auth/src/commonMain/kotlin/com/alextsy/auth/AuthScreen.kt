@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,13 +31,16 @@ import com.alextsy.shared.TextPrimary
 import com.alextsy.shared.TextSecondary
 import com.alextsy.shared.TextWhite
 import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
 
 @Composable
 fun AuthScreen(
-
+    navigateToHome: () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
     val viewModel = koinViewModel<AuthViewModel>()
     val messageBarState = rememberMessageBarState()
     var loadingState by remember { mutableStateOf(false) }
@@ -90,7 +94,13 @@ fun AuthScreen(
                         result.onSuccess { user ->
                             viewModel.createCustomer(
                                 user = user,
-                                onSuccess = { signInOnSuccess(messageBarState) },
+                                onSuccess = {
+                                    scope.launch {
+                                        signInOnSuccess(messageBarState)
+                                        delay(2000)
+                                        navigateToHome()
+                                    }
+                                },
                                 onError = { message -> messageBarState.addError(message) }
                             )
                             loadingState = false

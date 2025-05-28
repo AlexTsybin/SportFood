@@ -41,6 +41,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(project(":feature:auth"))
+            implementation(project(":feature:home"))
             implementation(libs.compose.navigation)
             implementation(libs.kotlinx.serialization)
         }
