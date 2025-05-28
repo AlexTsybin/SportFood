@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.alextsy.navigation.Screen
+import com.alextsy.shared.navigation.Screen
 import com.alextsy.navigation.SetupNavGraph
 import com.alextsy.shared.Constants
 import com.mmk.kmpauth.google.GoogleAuthCredentials

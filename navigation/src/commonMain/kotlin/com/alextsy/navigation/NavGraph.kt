@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alextsy.auth.AuthScreen
+import com.alextsy.shared.navigation.Screen
 import com.sportfood.home.HomeGraphScreen
 
 @Composable
