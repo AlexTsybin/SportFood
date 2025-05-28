@@ -41,8 +41,10 @@ kotlin {
 
             implementation(project(":shared"))
             implementation(project(":data"))
+
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.compose.navigation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
