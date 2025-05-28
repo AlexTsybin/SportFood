@@ -1,7 +1,7 @@
 package com.sportfood.home.domain
 
-import com.alextsy.shared.Resources
-import com.alextsy.shared.navigation.Screen
+import com.sportfood.shared.Resources
+import com.sportfood.shared.navigation.Screen
 import org.jetbrains.compose.resources.DrawableResource
 
 enum class BottomBarDestination(

@@ -1,6 +1,6 @@
 package com.sportfood.home.domain
 
-import com.alextsy.shared.Resources
+import com.sportfood.shared.Resources
 import org.jetbrains.compose.resources.DrawableResource
 
 enum class DrawerItem(

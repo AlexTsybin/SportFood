@@ -2,7 +2,6 @@ package com.sportfood.home.component
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,9 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.alextsy.shared.IconPrimary
-import com.alextsy.shared.IconSecondary
-import com.alextsy.shared.SurfaceLighter
+import com.sportfood.shared.IconPrimary
+import com.sportfood.shared.IconSecondary
+import com.sportfood.shared.SurfaceLighter
 import com.sportfood.home.domain.BottomBarDestination
 import org.jetbrains.compose.resources.painterResource
 

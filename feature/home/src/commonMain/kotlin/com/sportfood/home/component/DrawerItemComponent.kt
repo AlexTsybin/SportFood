@@ -14,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.alextsy.shared.FontSize
-import com.alextsy.shared.IconPrimary
-import com.alextsy.shared.TextPrimary
+import com.sportfood.shared.FontSize
+import com.sportfood.shared.IconPrimary
+import com.sportfood.shared.TextPrimary
 import com.sportfood.home.domain.DrawerItem
 import org.jetbrains.compose.resources.painterResource
 

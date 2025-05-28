@@ -63,7 +63,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.alextsy.sportfood"
+    namespace = "com.sportfood.sportfood"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
