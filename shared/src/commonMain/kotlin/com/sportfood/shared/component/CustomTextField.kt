@@ -1,4 +1,4 @@
-package com.sportfood.profile.component
+package com.sportfood.shared.component
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.border

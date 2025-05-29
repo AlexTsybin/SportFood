@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sportfood.auth.AuthScreen
 import com.sportfood.shared.navigation.Screen
 import com.sportfood.home.HomeGraphScreen
+import com.sportfood.profile.ProfileScreen
 
 @Composable
 fun SetupNavGraph(
@@ -32,8 +33,14 @@ fun SetupNavGraph(
                     navController.navigate(Screen.Auth) {
                         popUpTo<Screen.HomeGraph> { inclusive = true }
                     }
+                },
+                navigateToProfile = {
+                    navController.navigate(Screen.Profile)
                 }
             )
+        }
+        composable<Screen.Profile> {
+            ProfileScreen()
         }
     }
 }

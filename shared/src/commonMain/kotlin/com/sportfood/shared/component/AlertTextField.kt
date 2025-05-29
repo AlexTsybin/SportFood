@@ -1,4 +1,4 @@
-package com.sportfood.profile.component
+package com.sportfood.shared.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
