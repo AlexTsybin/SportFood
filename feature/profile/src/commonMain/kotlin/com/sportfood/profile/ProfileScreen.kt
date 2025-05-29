@@ -1,19 +1,36 @@
 package com.sportfood.profile
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.sportfood.shared.Resources
-import com.sportfood.shared.component.PrimaryButton
+import com.sportfood.shared.Surface
+import com.sportfood.shared.component.ProfileForm
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
-
+    Box(
+        modifier = Modifier
+            .background(Surface)
+            .systemBarsPadding()
+    ) {
+        ProfileForm(
+            firstName = "",
+            onFirstNameChange = {},
+            lastName = "Tsybin",
+            onLastNameChange = {},
+            email = "",
+            city = "",
+            onCityChange = {},
+            postalCode = null,
+            onPostalCodeChange = {},
+            address = "",
+            onAddressChange = {},
+            phoneNumber = null,
+            onPhoneNumberChange = {}
+        )
+    }
 }
