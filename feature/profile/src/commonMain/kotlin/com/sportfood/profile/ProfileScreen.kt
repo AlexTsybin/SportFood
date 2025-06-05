@@ -22,7 +22,7 @@ import com.sportfood.shared.IconPrimary
 import com.sportfood.shared.Resources
 import com.sportfood.shared.Surface
 import com.sportfood.shared.TextPrimary
-import com.sportfood.shared.component.ErrorCard
+import com.sportfood.shared.component.InfoCard
 import com.sportfood.shared.component.LoadingCard
 import com.sportfood.shared.component.PrimaryButton
 import com.sportfood.shared.component.ProfileForm
@@ -134,9 +134,10 @@ fun ProfileScreen(
                         }
                     },
                     onError = { message ->
-                        ErrorCard(
-                            message = message,
-                            fontSize = FontSize.REGULAR
+                        InfoCard(
+                            image = Resources.Image.Cat,
+                            title = "Oops!",
+                            subtitle = message
                         )
                     },
                 )
