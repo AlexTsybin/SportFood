@@ -9,21 +9,12 @@ import com.sportfood.data.domain.CustomerRepository
 import com.sportfood.shared.domain.Country
 import com.sportfood.shared.domain.PhoneNumber
 import com.sportfood.shared.util.RequestState
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val customerRepository: CustomerRepository,
 ) : ViewModel() {
-
-    private val customer = customerRepository.readCustomerFlow()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = RequestState.Loading
-        )
 
     var screenReady: RequestState<Unit> by mutableStateOf(RequestState.Loading)
     var screenState: ProfileScreenState by mutableStateOf(ProfileScreenState())
@@ -31,7 +22,7 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            customer.collectLatest { data ->
+            customerRepository.readCustomerFlow().collectLatest { data ->
                 if (data.isSuccess()) {
                     val fetchedCustomer = data.getSuccessData()
                     screenState = ProfileScreenState(
