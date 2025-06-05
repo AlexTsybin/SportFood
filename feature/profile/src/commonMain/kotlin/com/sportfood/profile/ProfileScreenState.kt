@@ -4,6 +4,7 @@ import com.sportfood.shared.domain.Country
 import com.sportfood.shared.domain.PhoneNumber
 
 data class ProfileScreenState(
+    val id: String = "",
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
