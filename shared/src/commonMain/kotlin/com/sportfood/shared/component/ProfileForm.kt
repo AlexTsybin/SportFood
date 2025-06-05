@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -34,11 +32,11 @@ fun ProfileForm(
     lastName: String,
     onLastNameChange: (String) -> Unit,
     email: String,
-    city: String,
+    city: String?,
     onCityChange: (String) -> Unit,
     postalCode: Int?,
     onPostalCodeChange: (Int?) -> Unit,
-    address: String,
+    address: String?,
     onAddressChange: (String) -> Unit,
     phoneNumber: String?,
     onPhoneNumberChange: (String) -> Unit,
@@ -59,10 +57,6 @@ fun ProfileForm(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(
-                horizontal = 24.dp,
-                vertical = 12.dp
-            )
             .verticalScroll(state = rememberScrollState())
             .imePadding(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -86,10 +80,10 @@ fun ProfileForm(
             enabled = false,
         )
         CustomTextField(
-            value = city,
+            value = city ?: "",
             onValueChange = onCityChange,
             placeholder = "City",
-            isError = city.length !in 3..50
+            isError = city?.length !in 3..50
         )
         CustomTextField(
             value = "${postalCode ?: ""}",
@@ -98,10 +92,10 @@ fun ProfileForm(
             isError = postalCode.toString().length !in 3..10
         )
         CustomTextField(
-            value = address,
+            value = address ?: "",
             onValueChange = onAddressChange,
             placeholder = "Address",
-            isError = address.length !in 3..50
+            isError = address?.length !in 3..50
         )
         Row(
             modifier = Modifier.fillMaxWidth(),

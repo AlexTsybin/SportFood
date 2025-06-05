@@ -1,7 +1,9 @@
 package com.sportfood.data.domain
 
+import com.sportfood.shared.domain.Customer
 import com.sportfood.shared.util.RequestState
 import dev.gitlive.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.Flow
 
 interface CustomerRepository {
 
@@ -14,4 +16,6 @@ interface CustomerRepository {
     )
 
     suspend fun signOut(): RequestState<Unit>
+
+    fun readCustomerFlow(): Flow<RequestState<Customer>>
 }
