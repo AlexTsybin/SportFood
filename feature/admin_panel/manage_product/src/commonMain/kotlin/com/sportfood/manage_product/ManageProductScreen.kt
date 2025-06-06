@@ -1,6 +1,7 @@
 package com.sportfood.manage_product
 
 import ContentWithMessageBar
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,6 +28,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +49,8 @@ import com.sportfood.shared.TextPrimary
 import com.sportfood.shared.component.AlertTextField
 import com.sportfood.shared.component.CustomTextField
 import com.sportfood.shared.component.PrimaryButton
+import com.sportfood.shared.component.dialog.CategoriesDialog
+import com.sportfood.shared.domain.product.ProductCategory
 import org.jetbrains.compose.resources.painterResource
 import rememberMessageBarState
 
@@ -55,6 +62,21 @@ fun ManageProductScreen(
     navigateBack: () -> Unit,
 ) {
     val messageBarState = rememberMessageBarState()
+    var category by remember { mutableStateOf(ProductCategory.Protein) }
+    var showCategoriesDialog by remember { mutableStateOf(false) }
+
+    AnimatedVisibility(
+        visible = showCategoriesDialog
+    ) {
+        CategoriesDialog(
+            category = category,
+            onDismiss = { showCategoriesDialog = false },
+            onConfirmCLick = { selectedCategory ->
+                category = selectedCategory
+                showCategoriesDialog = false
+            }
+        )
+    }
 
     Scaffold(
         containerColor = Surface,
@@ -148,8 +170,8 @@ fun ManageProductScreen(
                     )
                     AlertTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "Protein",
-                        onClick = {}
+                        text = category.title,
+                        onClick = { showCategoriesDialog = true }
                     )
                     CustomTextField(
                         value = "",
