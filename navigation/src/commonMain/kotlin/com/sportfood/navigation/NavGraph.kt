@@ -4,10 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.sportfood.admin_panel.AdminPanelScreen
 import com.sportfood.auth.AuthScreen
 import com.sportfood.shared.navigation.Screen
 import com.sportfood.home.HomeGraphScreen
+import com.sportfood.manage_product.ManageProductScreen
 import com.sportfood.profile.ProfileScreen
 
 @Composable
@@ -52,6 +54,18 @@ fun SetupNavGraph(
         }
         composable<Screen.AdminPanel> {
             AdminPanelScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                },
+                navigateToManageProduct = { id ->
+                    navController.navigate(Screen.ManageProduct(id = id))
+                }
+            )
+        }
+        composable<Screen.ManageProduct> {
+            val id = it.toRoute<Screen.ManageProduct>().id
+            ManageProductScreen(
+                id = id,
                 navigateBack = {
                     navController.navigateUp()
                 }
