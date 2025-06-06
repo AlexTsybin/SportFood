@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sportfood.admin_panel.AdminPanelScreen
 import com.sportfood.auth.AuthScreen
 import com.sportfood.shared.navigation.Screen
 import com.sportfood.home.HomeGraphScreen
@@ -37,10 +38,20 @@ fun SetupNavGraph(
                 navigateToProfile = {
                     navController.navigate(Screen.Profile)
                 },
+                navigateToAdminPanel = {
+                    navController.navigate(Screen.AdminPanel)
+                }
             )
         }
         composable<Screen.Profile> {
             ProfileScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<Screen.AdminPanel> {
+            AdminPanelScreen(
                 navigateBack = {
                     navController.navigateUp()
                 }
