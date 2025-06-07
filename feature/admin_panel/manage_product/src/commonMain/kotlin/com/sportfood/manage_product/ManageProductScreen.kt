@@ -52,6 +52,7 @@ import com.sportfood.shared.component.PrimaryButton
 import com.sportfood.shared.component.dialog.CategoriesDialog
 import com.sportfood.shared.domain.product.ProductCategory
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,17 +63,19 @@ fun ManageProductScreen(
     navigateBack: () -> Unit,
 ) {
     val messageBarState = rememberMessageBarState()
-    var category by remember { mutableStateOf(ProductCategory.Protein) }
+    val viewModel = koinViewModel<ManageProductViewModel>()
+    val screenState = viewModel.screenState
+    val isFormValid = viewModel.isFormValid
     var showCategoriesDialog by remember { mutableStateOf(false) }
 
     AnimatedVisibility(
         visible = showCategoriesDialog
     ) {
         CategoriesDialog(
-            category = category,
+            category = screenState.category,
             onDismiss = { showCategoriesDialog = false },
             onConfirmCLick = { selectedCategory ->
-                category = selectedCategory
+                viewModel.updateCategory(selectedCategory)
                 showCategoriesDialog = false
             }
         )
@@ -157,38 +160,42 @@ fun ManageProductScreen(
                         )
                     }
                     CustomTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = screenState.title,
+                        onValueChange = viewModel::updateTitle,
                         placeholder = "Title"
                     )
                     CustomTextField(
                         modifier = Modifier.height(168.dp),
-                        value = "",
-                        onValueChange = {},
+                        value = screenState.description,
+                        onValueChange = viewModel::updateDescription,
                         placeholder = "Description",
                         expanded = true
                     )
                     AlertTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        text = category.title,
+                        text = screenState.category.title,
                         onClick = { showCategoriesDialog = true }
                     )
                     CustomTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = "${screenState.weight ?: ""}",
+                        onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
                         placeholder = "Weight (Optional)",
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         )
                     )
                     CustomTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = screenState.flavors,
+                        onValueChange = viewModel::updateFlavors,
                         placeholder = "Flavor (Optional)"
                     )
                     CustomTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = "${screenState.price}",
+                        onValueChange = { value ->
+                            if (value.isEmpty() || value.toDoubleOrNull() != null) {
+                                viewModel.updatePrice(value.toDoubleOrNull() ?: 0.0)
+                            }
+                        },
                         placeholder = "Price",
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
@@ -199,7 +206,13 @@ fun ManageProductScreen(
                 PrimaryButton(
                     text = if (id == null) "Add new product" else "Update",
                     icon = if (id == null) Resources.Icon.Plus else Resources.Icon.Checkmark,
-                    onClick = {}
+                    enabled = isFormValid,
+                    onClick = {
+                        viewModel.createNewProduct(
+                            onSuccess = { messageBarState.addSuccess("Product successfully added!") },
+                            onError = { message -> messageBarState.addError(message) }
+                        )
+                    }
                 )
             }
         }
