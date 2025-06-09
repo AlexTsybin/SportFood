@@ -1,6 +1,7 @@
 package com.sportfood.data.domain
 
 import com.sportfood.shared.domain.product.Product
+import dev.gitlive.firebase.storage.File
 
 interface AdminRepository {
 
@@ -11,4 +12,6 @@ interface AdminRepository {
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
     )
+
+    suspend fun uploadImageToStorage(file: File): String?
 }

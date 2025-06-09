@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.sportfood.data.domain.AdminRepository
 import com.sportfood.shared.domain.product.Product
 import com.sportfood.shared.domain.product.ProductCategory
+import com.sportfood.shared.util.RequestState
+import dev.gitlive.firebase.storage.File
 import kotlinx.coroutines.launch
 
 class ManageProductViewModel(
@@ -15,6 +17,9 @@ class ManageProductViewModel(
 ) : ViewModel() {
 
     var screenState by mutableStateOf(ManageProductState())
+        private set
+
+    var thumbnailUploaderState: RequestState<Unit> by mutableStateOf(RequestState.Idle)
         private set
 
     val isFormValid
@@ -33,6 +38,10 @@ class ManageProductViewModel(
 
     fun updateThumbnail(value: String) {
         screenState = screenState.copy(thumbnail = value)
+    }
+
+    fun updateThumbnailUploaderState(value: RequestState<Unit>) {
+        thumbnailUploaderState = value
     }
 
     fun updateCategory(value: ProductCategory) {
@@ -70,6 +79,32 @@ class ManageProductViewModel(
                 onSuccess = onSuccess,
                 onError = onError
             )
+        }
+    }
+
+    fun uploadThumbnailToStorage(
+        file: File?,
+        onSuccess: () -> Unit,
+    ) {
+        if (file == null) {
+            updateThumbnailUploaderState(RequestState.Error("File is null. Error while selecting the image"))
+            return
+        }
+
+        updateThumbnailUploaderState(RequestState.Loading)
+        viewModelScope.launch {
+            try {
+                val downloadUrl = adminRepository.uploadImageToStorage(file)
+                if (downloadUrl.isNullOrEmpty()) {
+                    throw Exception("Failed to retrieve a download URL after the upload")
+                }
+
+                onSuccess()
+                updateThumbnailUploaderState(RequestState.Success(Unit))
+                updateThumbnail(downloadUrl)
+            } catch (e: Exception) {
+                updateThumbnailUploaderState(RequestState.Error("Error wile uploading: $e"))
+            }
         }
     }
 }
