@@ -46,6 +46,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.sportfood.shared.BebasNeueFont
 import com.sportfood.shared.BorderIdle
+import com.sportfood.shared.ButtonPrimary
 import com.sportfood.shared.FontSize
 import com.sportfood.shared.IconPrimary
 import com.sportfood.shared.Resources
@@ -191,15 +192,70 @@ fun ManageProductScreen(
                                 LoadingCard(modifier = Modifier.fillMaxSize())
                             },
                             onSuccess = {
-                                AsyncImage(
+                                Box(
                                     modifier = Modifier.fillMaxSize(),
-                                    model = ImageRequest.Builder(LocalPlatformContext.current)
-                                        .data(screenState.thumbnail)
-                                        .crossfade(enable = true)
-                                        .build(),
-                                    contentDescription = "Product thumbnail image",
-                                    contentScale = ContentScale.Crop
-                                )
+                                    contentAlignment = Alignment.TopEnd
+                                ) {
+                                    AsyncImage(
+                                        modifier = Modifier.fillMaxSize(),
+                                        model = ImageRequest.Builder(LocalPlatformContext.current)
+                                            .data(screenState.thumbnail)
+                                            .crossfade(enable = true)
+                                            .build(),
+                                        contentDescription = "Product thumbnail image",
+                                        contentScale = ContentScale.Crop
+                                    )
+//                                    IconButton(
+//                                        modifier = Modifier
+//                                            .clip(RoundedCornerShape(size = 6.dp))
+//                                            .padding(
+//                                                top = 12.dp,
+//                                                end = 12.dp
+//                                            )
+//                                            .background(ButtonPrimary)
+//                                            .clickable {  }
+//                                            .padding(all = 12.dp),
+//                                        onClick = {
+//                                            viewModel.deleteThumbnailFromStorage(
+//                                                onSuccess = { messageBarState.addSuccess("Thumbnail removed successfully!") },
+//                                                onError = { message ->
+//                                                    messageBarState.addError(message)
+//                                                }
+//                                            )
+//                                        }
+//                                    ) {
+//                                        Icon(
+//                                            modifier = Modifier.size(14.dp),
+//                                            painter = painterResource(Resources.Icon.Delete),
+//                                            contentDescription = "Delete icon"
+//                                        )
+//                                    }
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(
+                                                top = 12.dp,
+                                                end = 12.dp
+                                            )
+                                            .clip(RoundedCornerShape(size = 6.dp))
+                                            .background(ButtonPrimary)
+                                            .clickable {
+                                                viewModel.deleteThumbnailFromStorage(
+                                                    onSuccess = { messageBarState.addSuccess("Thumbnail removed successfully!") },
+                                                    onError = { message ->
+                                                        messageBarState.addError(message)
+                                                    }
+                                                )
+                                            }
+                                            .padding(all = 12.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(14.dp),
+                                            painter = painterResource(Resources.Icon.Delete),
+                                            contentDescription = "Delete icon"
+                                        )
+                                    }
+                                }
                             },
                             onError = { message ->
                                 Column(
