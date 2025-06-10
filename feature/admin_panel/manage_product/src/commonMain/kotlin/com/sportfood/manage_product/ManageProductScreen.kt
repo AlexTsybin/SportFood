@@ -215,13 +215,12 @@ fun ManageProductScreen(
                                         },
                                         colors = ButtonDefaults.textButtonColors(
                                             containerColor = Color.Transparent,
-                                            contentColor = TextSecondary
                                         )
                                     ) {
                                         Text(
                                             text = "Try again",
                                             fontSize = FontSize.SMALL,
-                                            color = TextPrimary
+                                            color = TextSecondary
                                         )
                                     }
                                 }
