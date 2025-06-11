@@ -60,6 +60,7 @@ import com.sportfood.shared.component.ErrorCard
 import com.sportfood.shared.component.LoadingCard
 import com.sportfood.shared.component.PrimaryButton
 import com.sportfood.shared.component.dialog.CategoriesDialog
+import com.sportfood.shared.domain.product.ProductCategory
 import com.sportfood.shared.util.DisplayResult
 import com.sportfood.shared.util.RequestState
 import org.jetbrains.compose.resources.painterResource
@@ -300,19 +301,23 @@ fun ManageProductScreen(
                         text = screenState.category.title,
                         onClick = { showCategoriesDialog = true }
                     )
-                    CustomTextField(
-                        value = "${screenState.weight ?: ""}",
-                        onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
-                        placeholder = "Weight (Optional)",
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
+                    AnimatedVisibility(
+                        visible = screenState.category != ProductCategory.Accessories
+                    ) {
+                        CustomTextField(
+                            value = "${screenState.weight ?: ""}",
+                            onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
+                            placeholder = "Weight",
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            )
                         )
-                    )
-                    CustomTextField(
-                        value = screenState.flavors,
-                        onValueChange = viewModel::updateFlavors,
-                        placeholder = "Flavor (Optional)"
-                    )
+                        CustomTextField(
+                            value = screenState.flavors,
+                            onValueChange = viewModel::updateFlavors,
+                            placeholder = "Flavor"
+                        )
+                    }
                     CustomTextField(
                         value = "${screenState.price}",
                         onValueChange = { value ->
