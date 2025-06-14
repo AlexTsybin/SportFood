@@ -3,6 +3,7 @@ package com.sportfood.manage_product
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sportfood.data.domain.AdminRepository
@@ -13,8 +14,10 @@ import dev.gitlive.firebase.storage.File
 import kotlinx.coroutines.launch
 
 class ManageProductViewModel(
-    private val adminRepository: AdminRepository
+    private val adminRepository: AdminRepository,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    private val productId = savedStateHandle.get<String>("id") ?: ""
 
     var screenState by mutableStateOf(ManageProductState())
         private set
@@ -27,6 +30,26 @@ class ManageProductViewModel(
                 screenState.description.isNotEmpty() &&
                 screenState.thumbnail.isNotEmpty() &&
                 screenState.price != 0.0
+
+    init {
+        productId.takeIf { it.isNotBlank() }?.let { id ->
+            viewModelScope.launch {
+                val selectedProduct = adminRepository.readProductById(id)
+                if (selectedProduct.isSuccess()) {
+                    val product = selectedProduct.getSuccessData()
+
+                    updateTitle(product.title)
+                    updateDescription(product.description)
+                    updateThumbnail(product.thumbnail)
+                    updateThumbnailUploaderState(RequestState.Success(Unit))
+                    updateCategory(ProductCategory.valueOf(product.category))
+                    updateFlavors(product.flavors?.joinToString(", ") ?: "")
+                    updateWeight(product.weight)
+                    updatePrice(product.price)
+                }
+            }
+        }
+    }
 
     fun updateTitle(value: String) {
         screenState = screenState.copy(title = value)
