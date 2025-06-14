@@ -6,8 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -50,6 +52,7 @@ fun ProductCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(size = 12.dp))
             .border(
                 width = 1.dp,
@@ -62,6 +65,7 @@ fun ProductCard(
         AsyncImage(
             modifier = Modifier
                 .width(120.dp)
+                .fillMaxHeight()
                 .clip(RoundedCornerShape(size = 12.dp))
                 .border(
                     width = 1.dp,
@@ -97,9 +101,8 @@ fun ProductCard(
                     .alpha(Alpha.HALF),
                 text = product.description,
                 fontSize = FontSize.REGULAR,
+                lineHeight = FontSize.REGULAR * 1.3,
                 color = TextPrimary,
-                fontFamily = RobotoCondensedFont(),
-                fontWeight = FontWeight.Medium,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
@@ -115,7 +118,9 @@ fun ProductCard(
                     if (ProductCategory.valueOf(category) == ProductCategory.Accessories) {
                         Spacer(modifier = Modifier.weight(1f))
                     } else {
-                        Row {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Icon(
                                 modifier = Modifier.size(14.dp),
                                 painter = painterResource(Resources.Icon.Weight),

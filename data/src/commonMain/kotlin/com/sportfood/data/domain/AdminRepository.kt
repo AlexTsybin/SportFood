@@ -1,7 +1,9 @@
 package com.sportfood.data.domain
 
 import com.sportfood.shared.domain.product.Product
+import com.sportfood.shared.util.RequestState
 import dev.gitlive.firebase.storage.File
+import kotlinx.coroutines.flow.Flow
 
 interface AdminRepository {
 
@@ -20,4 +22,6 @@ interface AdminRepository {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     )
+
+    fun readLastTenProducts(): Flow<RequestState<List<Product>>>
 }

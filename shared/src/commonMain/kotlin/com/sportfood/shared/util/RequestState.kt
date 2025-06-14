@@ -52,7 +52,7 @@ fun <T> RequestState<T>.DisplayResult(
     backgroundColor: Color? = null,
 ) {
     AnimatedContent(
-        modifier = Modifier
+        modifier = modifier
             .background(color = backgroundColor ?: Color.Unspecified),
         targetState = this,
         transitionSpec = {

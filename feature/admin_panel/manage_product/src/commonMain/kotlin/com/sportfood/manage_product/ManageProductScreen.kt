@@ -304,19 +304,22 @@ fun ManageProductScreen(
                     AnimatedVisibility(
                         visible = screenState.category != ProductCategory.Accessories
                     ) {
-                        CustomTextField(
-                            value = "${screenState.weight ?: ""}",
-                            onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
-                            placeholder = "Weight",
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number
+                        Column {
+                            CustomTextField(
+                                value = "${screenState.weight ?: ""}",
+                                onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
+                                placeholder = "Weight",
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number
+                                )
                             )
-                        )
-                        CustomTextField(
-                            value = screenState.flavors,
-                            onValueChange = viewModel::updateFlavors,
-                            placeholder = "Flavor"
-                        )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            CustomTextField(
+                                value = screenState.flavors,
+                                onValueChange = viewModel::updateFlavors,
+                                placeholder = "Flavor"
+                            )
+                        }
                     }
                     CustomTextField(
                         value = "${screenState.price}",

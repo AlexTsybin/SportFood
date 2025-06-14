@@ -1,5 +1,6 @@
 package com.sportfood.di
 
+import com.sportfood.admin_panel.AdminPanelViewModel
 import com.sportfood.auth.AuthViewModel
 import com.sportfood.data.AdminRepositoryImpl
 import com.sportfood.data.CustomerRepositoryImpl
@@ -20,6 +21,7 @@ val sharedModule = module {
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
     viewModelOf(::ProfileViewModel)
+    viewModelOf(::AdminPanelViewModel)
     viewModelOf(::ManageProductViewModel)
 }
 
