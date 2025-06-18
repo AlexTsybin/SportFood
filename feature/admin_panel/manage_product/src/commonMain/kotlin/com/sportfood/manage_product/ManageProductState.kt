@@ -17,4 +17,7 @@ data class ManageProductState(
     val price: Double = 0.0,
     val flavors: String = "",
     val weight: Int? = null,
+    val isNew: Boolean = false,
+    val isPopular: Boolean = false,
+    val isDiscounted: Boolean = false,
 )

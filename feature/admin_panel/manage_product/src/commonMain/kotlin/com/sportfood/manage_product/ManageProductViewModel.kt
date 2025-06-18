@@ -7,7 +7,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sportfood.data.domain.AdminRepository
-import com.sportfood.shared.component.ProductCard
 import com.sportfood.shared.domain.product.Product
 import com.sportfood.shared.domain.product.ProductCategory
 import com.sportfood.shared.util.RequestState
@@ -49,6 +48,9 @@ class ManageProductViewModel(
                     updateFlavors(product.flavors?.joinToString(",") ?: "")
                     updateWeight(product.weight)
                     updatePrice(product.price)
+                    updateNew(product.isNew)
+                    updatePopular(product.isPopular)
+                    updateDiscounted(product.isDiscounted)
                 }
             }
         }
@@ -94,6 +96,18 @@ class ManageProductViewModel(
         screenState = screenState.copy(price = value)
     }
 
+    fun updateNew(value: Boolean) {
+        screenState = screenState.copy(isNew = value)
+    }
+
+    fun updatePopular(value: Boolean) {
+        screenState = screenState.copy(isPopular = value)
+    }
+
+    fun updateDiscounted(value: Boolean) {
+        screenState = screenState.copy(isDiscounted = value)
+    }
+
     fun createNewProduct(
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
@@ -109,6 +123,9 @@ class ManageProductViewModel(
                     flavors = screenState.flavors.split(","),
                     weight = screenState.weight,
                     price = screenState.price,
+                    isNew = screenState.isNew,
+                    isPopular = screenState.isPopular,
+                    isDiscounted = screenState.isDiscounted
                 ),
                 onSuccess = onSuccess,
                 onError = onError
@@ -134,7 +151,7 @@ class ManageProductViewModel(
                 }
 
                 productId.takeIf { it.isNotEmpty() }?.let { id ->
-                    adminRepository.updateImageThumbnail(
+                    adminRepository.updateProductThumbnail(
                         productId = id,
                         downloadUrl = downloadUrl,
                         onSuccess = {
@@ -197,7 +214,7 @@ class ManageProductViewModel(
                 onSuccess = {
                     productId.takeIf { it.isNotEmpty() }?.let { id ->
                         launch {
-                            adminRepository.updateImageThumbnail(
+                            adminRepository.updateProductThumbnail(
                                 productId = id,
                                 downloadUrl = "",
                                 onSuccess = {

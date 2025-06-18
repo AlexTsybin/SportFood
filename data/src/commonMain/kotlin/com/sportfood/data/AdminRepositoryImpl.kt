@@ -1,5 +1,6 @@
 package com.sportfood.data
 
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.util.doubleFromBits
 import com.sportfood.data.domain.AdminRepository
 import com.sportfood.shared.domain.product.Product
@@ -31,7 +32,8 @@ class AdminRepositoryImpl : AdminRepository {
             if (currentUserId != null) {
                 val firestore = Firebase.firestore
                 val productCollection = firestore.collection(collectionPath = "product")
-                productCollection.document(product.id).set(product)
+                productCollection.document(product.id)
+                    .set(product.copy(title = product.title.uppercase()))
                 onSuccess()
             } else {
                 onError("User is not available")
@@ -86,8 +88,8 @@ class AdminRepositoryImpl : AdminRepository {
                         val products = query.documents.map { document ->
                             Product(
                                 id = document.id,
-                                createdAt = document.get(field = "createdAt"),
                                 title = document.get(field = "title"),
+                                createdAt = document.get(field = "createdAt"),
                                 description = document.get(field = "description"),
                                 thumbnail = document.get(field = "thumbnail"),
                                 category = document.get(field = "category"),
@@ -99,7 +101,7 @@ class AdminRepositoryImpl : AdminRepository {
                                 isNew = document.get(field = "isNew"),
                             )
                         }
-                        send(RequestState.Success(data = products))
+                        send(RequestState.Success(data = products.map { it.copy(title = it.title.uppercase()) }))
                     }
             } else {
                 send(RequestState.Error("User is not available"))
@@ -121,8 +123,8 @@ class AdminRepositoryImpl : AdminRepository {
                 if (productDocument.exists) {
                     val product = Product(
                         id = productDocument.id,
-                        createdAt = productDocument.get(field = "createdAt"),
                         title = productDocument.get(field = "title"),
+                        createdAt = productDocument.get(field = "createdAt"),
                         description = productDocument.get(field = "description"),
                         thumbnail = productDocument.get(field = "thumbnail"),
                         category = productDocument.get(field = "category"),
@@ -133,7 +135,7 @@ class AdminRepositoryImpl : AdminRepository {
                         isDiscounted = productDocument.get(field = "isDiscounted"),
                         isNew = productDocument.get(field = "isNew"),
                     )
-                    RequestState.Success(product)
+                    RequestState.Success(product.copy(title = product.title.uppercase()))
                 } else {
                     RequestState.Error("Selected product not found")
                 }
@@ -145,7 +147,7 @@ class AdminRepositoryImpl : AdminRepository {
         }
     }
 
-    override suspend fun updateImageThumbnail(
+    override suspend fun updateProductThumbnail(
         productId: String,
         downloadUrl: String,
         onSuccess: () -> Unit,
@@ -189,7 +191,7 @@ class AdminRepositoryImpl : AdminRepository {
                     .get()
                 if (existingProduct.exists) {
                     productCollection.document(product.id)
-                        .update(product)
+                        .update(product.copy(title = product.title.lowercase()))
                     onSuccess()
                 } else {
                     onError("Selected product not found")
@@ -229,6 +231,53 @@ class AdminRepositoryImpl : AdminRepository {
             onError("Error while updateing a thumbnail image: ${e.message}")
         }
     }
+
+    override fun searchProductsByTitle(searchQuery: String): Flow<RequestState<List<Product>>> =
+        channelFlow {
+            try {
+                val userId = getCurrentUserId()
+                if (userId != null) {
+//                    val queryText = searchQuery.trim().lowercase()
+//                    val endText = queryText + "\uf8ff"
+
+                    val database = Firebase.firestore
+                    database.collection(collectionPath = "product")
+//                        .orderBy("title")
+//                        .startAt(queryText)
+//                        .endAt(endText)
+                        .snapshots
+                        .collectLatest { query ->
+                            val products = query.documents.map { document ->
+                                Product(
+                                    id = document.id,
+                                    title = document.get(field = "title"),
+                                    createdAt = document.get(field = "createdAt"),
+                                    description = document.get(field = "description"),
+                                    thumbnail = document.get(field = "thumbnail"),
+                                    category = document.get(field = "category"),
+                                    flavors = document.get(field = "flavors"),
+                                    weight = document.get(field = "weight"),
+                                    price = document.get(field = "price"),
+                                    isPopular = document.get(field = "isPopular"),
+                                    isDiscounted = document.get(field = "isDiscounted"),
+                                    isNew = document.get(field = "isNew"),
+                                )
+                            }
+                            send(
+                                RequestState.Success(
+                                    products
+                                        .filter { it.title.contains(searchQuery) }
+                                        .map { it.copy(title = it.title.uppercase()) }
+                                )
+                            )
+                        }
+                } else {
+                    send(RequestState.Error("User is not available"))
+                }
+            } catch (e: Exception) {
+                send(RequestState.Error("Error while searching products: ${e.message}"))
+            }
+        }
 
     private fun extractFirebaseStoragePath(downloadUrl: String): String? {
         val startIndex = downloadUrl.indexOf("/o/") + 3
