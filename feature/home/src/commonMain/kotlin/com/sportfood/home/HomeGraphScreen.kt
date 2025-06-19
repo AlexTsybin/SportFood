@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -66,6 +67,7 @@ fun HomeGraphScreen(
     navigateToAdminPanel: () -> Unit,
 ) {
     val viewModel = koinViewModel<HomeGraphViewModel>()
+    val customer by viewModel.customer.collectAsState()
     val messageBarState = rememberMessageBarState()
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState()
@@ -103,6 +105,7 @@ fun HomeGraphScreen(
             .systemBarsPadding()
     ) {
         CustomDrawer(
+            customer = customer,
             onProfileClick = navigateToProfile,
             onContactUsClick = {},
             onSignOutCLick = {

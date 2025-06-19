@@ -1,5 +1,6 @@
 package com.sportfood.home.component
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,9 +17,12 @@ import com.sportfood.shared.FontSize
 import com.sportfood.shared.TextPrimary
 import com.sportfood.shared.TextSecondary
 import com.sportfood.home.domain.DrawerItem
+import com.sportfood.shared.domain.Customer
+import com.sportfood.shared.util.RequestState
 
 @Composable
 fun CustomDrawer(
+    customer: RequestState<Customer>,
     onProfileClick: () -> Unit,
     onContactUsClick: () -> Unit,
     onSignOutCLick: () -> Unit,
@@ -62,12 +66,16 @@ fun CustomDrawer(
             Spacer(modifier = Modifier.height(12.dp))
         }
         Spacer(modifier = Modifier.weight(1f))
-        DrawerItemComponent(
-            drawerItem = DrawerItem.Admin,
-            onCLick = {
-                onAdminPanelClick()
+        AnimatedContent(
+            targetState = customer
+        ) { customerState ->
+            if (customerState.isSuccess() && customerState.getSuccessData().isAdmin) {
+                DrawerItemComponent(
+                    drawerItem = DrawerItem.Admin,
+                    onCLick = onAdminPanelClick
+                )
             }
-        )
+        }
         Spacer(modifier = Modifier.height(24.dp))
     }
 }

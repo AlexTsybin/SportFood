@@ -37,6 +37,11 @@ class CustomerRepositoryImpl : CustomerRepository {
                         email = user.email ?: "Unknown",
                     )
                     customerCollection.document(user.uid).set(customer)
+                    customerCollection.document(user.uid)
+                        .collection("privateData")
+                        .document("role")
+                        .set(mapOf("isAdmin" to false))
+                    onSuccess()
                 }
             } else {
                 onError("User is not available")
@@ -66,6 +71,13 @@ class CustomerRepositoryImpl : CustomerRepository {
                     .snapshots
                     .collectLatest { document ->
                         if (document.exists) {
+                            val privateDataDocument = database
+                                .collection(collectionPath = "customer")
+                                .document(userId)
+                                .collection(collectionPath = "privateData")
+                                .document("role")
+                                .get()
+
                             val customer = Customer(
                                 id = document.id,
                                 firstName = document.get(field = "firstName"),
@@ -76,6 +88,7 @@ class CustomerRepositoryImpl : CustomerRepository {
                                 address = document.get(field = "address"),
                                 phoneNumber = document.get(field = "phoneNumber"),
                                 cart = document.get(field = "cart"),
+                                isAdmin = privateDataDocument.get(field = "isAdmin"),
                             )
                             send(RequestState.Success(data = customer))
                         } else {
