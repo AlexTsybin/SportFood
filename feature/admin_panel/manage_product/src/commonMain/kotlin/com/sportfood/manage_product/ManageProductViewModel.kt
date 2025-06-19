@@ -194,6 +194,9 @@ class ManageProductViewModel(
                             .filter { it.isNotEmpty() },
                         weight = screenState.weight,
                         price = screenState.price,
+                        isNew = screenState.isNew,
+                        isPopular = screenState.isPopular,
+                        isDiscounted = screenState.isDiscounted
                     ),
                     onSuccess = onSuccess,
                     onError = onError

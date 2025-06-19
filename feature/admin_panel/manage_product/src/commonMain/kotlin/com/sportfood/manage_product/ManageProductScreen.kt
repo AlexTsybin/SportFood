@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -53,7 +56,9 @@ import com.sportfood.shared.FontSize
 import com.sportfood.shared.IconPrimary
 import com.sportfood.shared.Resources
 import com.sportfood.shared.Surface
+import com.sportfood.shared.SurfaceDarker
 import com.sportfood.shared.SurfaceLighter
+import com.sportfood.shared.SurfaceSecondary
 import com.sportfood.shared.TextPrimary
 import com.sportfood.shared.TextSecondary
 import com.sportfood.shared.component.AlertTextField
@@ -200,8 +205,8 @@ fun ManageProductScreen(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .verticalScroll(rememberScrollState())
-                        .padding(bottom = 12.dp),
+                        .verticalScroll(rememberScrollState()),
+//                        .padding(bottom = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Box(
@@ -248,31 +253,6 @@ fun ManageProductScreen(
                                         contentDescription = "Product thumbnail image",
                                         contentScale = ContentScale.Crop
                                     )
-//                                    IconButton(
-//                                        modifier = Modifier
-//                                            .clip(RoundedCornerShape(size = 6.dp))
-//                                            .padding(
-//                                                top = 12.dp,
-//                                                end = 12.dp
-//                                            )
-//                                            .background(ButtonPrimary)
-//                                            .clickable {  }
-//                                            .padding(all = 12.dp),
-//                                        onClick = {
-//                                            viewModel.deleteThumbnailFromStorage(
-//                                                onSuccess = { messageBarState.addSuccess("Thumbnail removed successfully!") },
-//                                                onError = { message ->
-//                                                    messageBarState.addError(message)
-//                                                }
-//                                            )
-//                                        }
-//                                    ) {
-//                                        Icon(
-//                                            modifier = Modifier.size(14.dp),
-//                                            painter = painterResource(Resources.Icon.Delete),
-//                                            contentDescription = "Delete icon"
-//                                        )
-//                                    }
                                     Box(
                                         modifier = Modifier
                                             .padding(
@@ -375,8 +355,86 @@ fun ManageProductScreen(
                             keyboardType = KeyboardType.Number
                         )
                     )
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(24.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 12.dp),
+                                text = "New",
+                                fontSize = FontSize.REGULAR,
+                                color = TextPrimary
+                            )
+                            Switch(
+                                checked = screenState.isNew,
+                                onCheckedChange = viewModel::updateNew,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = SurfaceSecondary,
+                                    uncheckedBorderColor = SurfaceDarker,
+                                )
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 12.dp),
+                                text = "Popular",
+                                fontSize = FontSize.REGULAR,
+                                color = TextPrimary
+                            )
+                            Switch(
+                                checked = screenState.isPopular,
+                                onCheckedChange = viewModel::updatePopular,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = SurfaceSecondary,
+                                    uncheckedBorderColor = SurfaceDarker,
+                                )
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 12.dp),
+                                text = "Discounted",
+                                fontSize = FontSize.REGULAR,
+                                color = TextPrimary
+                            )
+                            Switch(
+                                checked = screenState.isDiscounted,
+                                onCheckedChange = viewModel::updateDiscounted,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = SurfaceSecondary,
+                                    uncheckedBorderColor = SurfaceDarker,
+                                )
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
-                Spacer(modifier = Modifier.height(12.dp))
+//                Spacer(modifier = Modifier.height(12.dp))
                 PrimaryButton(
                     text = if (id == null) "Add new product" else "Update",
                     icon = if (id == null) Resources.Icon.Plus else Resources.Icon.Checkmark,
