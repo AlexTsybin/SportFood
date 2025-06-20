@@ -4,10 +4,13 @@ import com.sportfood.admin_panel.AdminPanelViewModel
 import com.sportfood.auth.AuthViewModel
 import com.sportfood.data.AdminRepositoryImpl
 import com.sportfood.data.CustomerRepositoryImpl
+import com.sportfood.data.ProductRepositoryImpl
 import com.sportfood.data.domain.AdminRepository
 import com.sportfood.data.domain.CustomerRepository
+import com.sportfood.data.domain.ProductRepository
 import com.sportfood.home.HomeGraphViewModel
 import com.sportfood.manage_product.ManageProductViewModel
+import com.sportfood.products_overview.ProductsOverviewViewModel
 import com.sportfood.profile.ProfileViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -18,11 +21,13 @@ import org.koin.dsl.module
 val sharedModule = module {
     single<CustomerRepository> { CustomerRepositoryImpl() } 
     single<AdminRepository> { AdminRepositoryImpl() }
+    single<ProductRepository> { ProductRepositoryImpl() }
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
     viewModelOf(::ProfileViewModel)
     viewModelOf(::AdminPanelViewModel)
     viewModelOf(::ManageProductViewModel)
+    viewModelOf(::ProductsOverviewViewModel)
 }
 
 expect val targetModule: Module

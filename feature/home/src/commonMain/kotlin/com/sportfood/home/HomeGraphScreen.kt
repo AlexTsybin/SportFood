@@ -55,6 +55,7 @@ import com.sportfood.home.domain.BottomBarDestination
 import com.sportfood.home.domain.CustomDrawerState
 import com.sportfood.home.domain.isOpened
 import com.sportfood.home.domain.opposite
+import com.sportfood.products_overview.ProductsOverviewScreen
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
@@ -195,7 +196,9 @@ fun HomeGraphScreen(
                             navController = navController,
                             startDestination = Screen.Products
                         ) {
-                            composable<Screen.Products> { Text("Products") }
+                            composable<Screen.Products> {
+                                ProductsOverviewScreen()
+                            }
                             composable<Screen.Cart> { Text("Cart") }
                             composable<Screen.Categories> { Text("Categories") }
                         }

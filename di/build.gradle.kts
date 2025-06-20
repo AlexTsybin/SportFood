@@ -44,6 +44,7 @@ kotlin {
             implementation(project(":feature:profile"))
             implementation(project(":feature:admin_panel"))
             implementation(project(":feature:admin_panel:manage_product"))
+            implementation(project(":feature:home:products_overview"))
             implementation(project(":data"))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
