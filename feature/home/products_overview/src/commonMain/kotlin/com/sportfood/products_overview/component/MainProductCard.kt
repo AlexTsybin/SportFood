@@ -23,11 +23,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,10 +44,10 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.sportfood.shared.Alpha
 import com.sportfood.shared.FontSize
+import com.sportfood.shared.IconWhite
 import com.sportfood.shared.Resources
 import com.sportfood.shared.RobotoCondensedFont
 import com.sportfood.shared.TextBrand
-import com.sportfood.shared.TextPrimary
 import com.sportfood.shared.TextWhite
 import com.sportfood.shared.domain.product.Product
 import com.sportfood.shared.domain.product.ProductCategory
@@ -58,7 +57,7 @@ import org.jetbrains.compose.resources.painterResource
 fun MainProductCard(
     modifier: Modifier = Modifier,
     product: Product,
-    isVisible: Boolean = false,
+    isLarge: Boolean = false,
     onClick: (String) -> Unit,
 ) {
     val infiniteTransition = rememberInfiniteTransition()
@@ -82,15 +81,15 @@ fun MainProductCard(
     Box(
         modifier = modifier
             .fillMaxHeight()
+            .clip(RoundedCornerShape(size = 12.dp))
             .clickable { onClick(product.id) }
     ) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(size = 12.dp))
                 .animateContentSize()
                 .then(
-                    if (isVisible) Modifier
+                    if (isLarge) Modifier
                         .scale(animatedScale)
                         .rotate(animatedRotation)
                     else Modifier
@@ -135,6 +134,7 @@ fun MainProductCard(
             Text(
                 text = product.description,
                 fontSize = FontSize.REGULAR,
+                lineHeight = FontSize.REGULAR * 1.3f,
                 color = TextWhite.copy(alpha = Alpha.HALF),
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
@@ -157,13 +157,14 @@ fun MainProductCard(
                             Icon(
                                 modifier = Modifier.size(14.dp),
                                 painter = painterResource(Resources.Icon.Weight),
-                                contentDescription = "Weight icon"
+                                contentDescription = "Weight icon",
+                                tint = IconWhite
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = "${product.weight}g",
                                 fontSize = FontSize.EXTRA_SMALL,
-                                color = TextPrimary
+                                color = TextWhite
                             )
                         }
                     }
