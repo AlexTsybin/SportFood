@@ -2,6 +2,7 @@ package com.sportfood.details.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,10 +25,12 @@ fun FlavorChip(
     modifier: Modifier = Modifier,
     flavor: String,
     isSelected: Boolean = false,
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(size = 12.dp))
+            .clickable { onClick() }
             .background(Surface)
             .border(
                 width = 1.dp,

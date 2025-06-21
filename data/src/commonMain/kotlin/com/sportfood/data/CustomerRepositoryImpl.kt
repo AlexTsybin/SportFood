@@ -1,6 +1,7 @@
 package com.sportfood.data
 
 import com.sportfood.data.domain.CustomerRepository
+import com.sportfood.shared.domain.CartItem
 import com.sportfood.shared.domain.Customer
 import com.sportfood.shared.util.RequestState
 import dev.gitlive.firebase.Firebase
@@ -51,12 +52,40 @@ class CustomerRepositoryImpl : CustomerRepository {
         }
     }
 
-    override suspend fun signOut(): RequestState<Unit> {
-        return try {
-            Firebase.auth.signOut()
-            RequestState.Success(data = Unit)
+    override suspend fun updateCustomer(
+        customer: Customer,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+                val customerCollection = database.collection(collectionPath = "customer")
+                val existingCustomer = customerCollection
+                    .document(customer.id)
+                    .get()
+
+                if (existingCustomer.exists) {
+                    customerCollection
+                        .document(customer.id)
+                        .update(
+                            "firstName" to customer.firstName,
+                            "lastName" to customer.lastName,
+                            "city" to customer.city,
+                            "postalCode" to customer.postalCode,
+                            "address" to customer.address,
+                            "phoneNumber" to customer.phoneNumber,
+                        )
+                    onSuccess()
+                } else {
+                    onError("Customer not found")
+                }
+            } else {
+                onError("User is not available")
+            }
         } catch (e: Exception) {
-            RequestState.Error(message = "Error while signing out: ${e.message}")
+            onError("Error while updating a Customer information: ${e.message}")
         }
     }
 
@@ -103,8 +132,8 @@ class CustomerRepositoryImpl : CustomerRepository {
         }
     }
 
-    override suspend fun updateCustomer(
-        customer: Customer,
+    override suspend fun addItemToCart(
+        cartItem: CartItem,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
@@ -114,19 +143,15 @@ class CustomerRepositoryImpl : CustomerRepository {
                 val database = Firebase.firestore
                 val customerCollection = database.collection(collectionPath = "customer")
                 val existingCustomer = customerCollection
-                    .document(customer.id)
+                    .document(userId)
                     .get()
-
                 if (existingCustomer.exists) {
-                    customerCollection
-                        .document(customer.id)
-                        .update(
-                            "firstName" to customer.firstName,
-                            "lastName" to customer.lastName,
-                            "city" to customer.city,
-                            "postalCode" to customer.postalCode,
-                            "address" to customer.address,
-                            "phoneNumber" to customer.phoneNumber,
+                    val existingCart = existingCustomer.get<List<CartItem>>("cart")
+                    val updatedCart = existingCart + cartItem
+                    customerCollection.document(userId)
+                        .set(
+                            data = mapOf("cart" to updatedCart),
+                            merge = true
                         )
                     onSuccess()
                 } else {
@@ -136,7 +161,16 @@ class CustomerRepositoryImpl : CustomerRepository {
                 onError("User is not available")
             }
         } catch (e: Exception) {
-            onError("Error while updating a Customer information: ${e.message}")
+            onError("Error while adding a product to cart ${e.message}")
+        }
+    }
+
+    override suspend fun signOut(): RequestState<Unit> {
+        return try {
+            Firebase.auth.signOut()
+            RequestState.Success(data = Unit)
+        } catch (e: Exception) {
+            RequestState.Error(message = "Error while signing out: ${e.message}")
         }
     }
 }
