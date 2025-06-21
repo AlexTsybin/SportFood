@@ -52,6 +52,8 @@ import com.sportfood.shared.TextPrimary
 import com.sportfood.shared.component.InfoCard
 import com.sportfood.shared.component.LoadingCard
 import com.sportfood.shared.component.PrimaryButton
+import com.sportfood.shared.component.QuantityCounter
+import com.sportfood.shared.domain.QuantityCounterSize
 import com.sportfood.shared.domain.product.ProductCategory
 import com.sportfood.shared.util.DisplayResult
 import org.jetbrains.compose.resources.painterResource
@@ -67,6 +69,7 @@ fun DetailsScreen(
     val messageBarState = rememberMessageBarState()
     val viewModel = koinViewModel<DetailsViewModel>()
     val product by viewModel.product.collectAsState()
+    val quantity = viewModel.quantity
 
     Scaffold(
         containerColor = Surface,
@@ -88,6 +91,19 @@ fun DetailsScreen(
                             tint = IconPrimary
                         )
                     }
+                },
+                actions = {
+                    QuantityCounter(
+                        size = QuantityCounterSize.Large,
+                        value = quantity.toString(),
+                        onMinusClick = {
+                            if (quantity > 1) viewModel.updateQuantity(quantity - 1)
+                        },
+                        onPlusClick = {
+                            if (quantity < 10) viewModel.updateQuantity(quantity + 1)
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Surface,
