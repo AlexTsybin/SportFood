@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.sportfood.admin_panel.AdminPanelScreen
 import com.sportfood.auth.AuthScreen
+import com.sportfood.details.DetailsScreen
 import com.sportfood.shared.navigation.Screen
 import com.sportfood.home.HomeGraphScreen
 import com.sportfood.manage_product.ManageProductScreen
@@ -42,6 +43,9 @@ fun SetupNavGraph(
                 },
                 navigateToAdminPanel = {
                     navController.navigate(Screen.AdminPanel)
+                },
+                navigateToDetails = { productId ->
+                    navController.navigate(Screen.Details(id = productId))
                 }
             )
         }
@@ -66,6 +70,13 @@ fun SetupNavGraph(
             val id = it.toRoute<Screen.ManageProduct>().id
             ManageProductScreen(
                 id = id,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<Screen.Details> {
+            DetailsScreen(
                 navigateBack = {
                     navController.navigateUp()
                 }

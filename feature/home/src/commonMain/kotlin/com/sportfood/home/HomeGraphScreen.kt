@@ -66,6 +66,7 @@ fun HomeGraphScreen(
     navigateToAuth: () -> Unit,
     navigateToProfile: () -> Unit,
     navigateToAdminPanel: () -> Unit,
+    navigateToDetails: (String) -> Unit,
 ) {
     val viewModel = koinViewModel<HomeGraphViewModel>()
     val customer by viewModel.customer.collectAsState()
@@ -197,7 +198,9 @@ fun HomeGraphScreen(
                             startDestination = Screen.Products
                         ) {
                             composable<Screen.Products> {
-                                ProductsOverviewScreen()
+                                ProductsOverviewScreen(
+                                    navigateToDetails = navigateToDetails
+                                )
                             }
                             composable<Screen.Cart> { Text("Cart") }
                             composable<Screen.Categories> { Text("Categories") }

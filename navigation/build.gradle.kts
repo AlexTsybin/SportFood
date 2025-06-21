@@ -40,12 +40,13 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
+            implementation(project(":shared"))
             implementation(project(":feature:auth"))
             implementation(project(":feature:home"))
             implementation(project(":feature:profile"))
+            implementation(project(":feature:details"))
             implementation(project(":feature:admin_panel"))
             implementation(project(":feature:admin_panel:manage_product"))
-            implementation(project(":shared"))
             implementation(libs.compose.navigation)
             implementation(libs.kotlinx.serialization)
         }

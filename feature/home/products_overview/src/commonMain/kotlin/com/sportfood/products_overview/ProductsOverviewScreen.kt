@@ -42,7 +42,8 @@ import kotlin.math.abs
 
 @Composable
 fun ProductsOverviewScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToDetails: (String) -> Unit,
 ) {
     val viewModel = koinViewModel<ProductsOverviewViewModel>()
     val products by viewModel.products.collectAsState()
@@ -96,7 +97,7 @@ fun ProductsOverviewScreen(
                                         .fillParentMaxWidth(0.6f),
                                     product = product,
                                     isLarge = isLarge,
-                                    onClick = {}
+                                    onClick = { navigateToDetails(it) }
                                 )
                             }
                         }
@@ -124,7 +125,7 @@ fun ProductsOverviewScreen(
                             ) { product ->
                                 ProductCard(
                                     product = product,
-                                    onClick = {}
+                                    onClick = { navigateToDetails(it) }
                                 )
                             }
                         }

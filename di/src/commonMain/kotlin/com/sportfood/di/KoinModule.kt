@@ -8,6 +8,7 @@ import com.sportfood.data.ProductRepositoryImpl
 import com.sportfood.data.domain.AdminRepository
 import com.sportfood.data.domain.CustomerRepository
 import com.sportfood.data.domain.ProductRepository
+import com.sportfood.details.DetailsViewModel
 import com.sportfood.home.HomeGraphViewModel
 import com.sportfood.manage_product.ManageProductViewModel
 import com.sportfood.products_overview.ProductsOverviewViewModel
@@ -28,6 +29,7 @@ val sharedModule = module {
     viewModelOf(::AdminPanelViewModel)
     viewModelOf(::ManageProductViewModel)
     viewModelOf(::ProductsOverviewViewModel)
+    viewModelOf(::DetailsViewModel)
 }
 
 expect val targetModule: Module

@@ -22,12 +22,20 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "di"
+            baseName = "details"
             isStatic = true
         }
     }
 
     sourceSets {
+
+        androidMain.dependencies {
+            implementation(libs.ktor.android.client)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.darwin.client)
+        }
 
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -39,17 +47,16 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation(project(":feature:auth"))
-            implementation(project(":feature:home"))
-            implementation(project(":feature:profile"))
-            implementation(project(":feature:details"))
-            implementation(project(":feature:admin_panel"))
-            implementation(project(":feature:admin_panel:manage_product"))
-            implementation(project(":feature:home:products_overview"))
+            implementation(project(":shared"))
             implementation(project(":data"))
-            implementation(libs.koin.core)
+
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.messagebar.kmp)
+            implementation(libs.coil3)
+            implementation(libs.coil3.compose)
+            implementation(libs.coil3.compose.core)
+            implementation(libs.coil3.network.ktor)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -58,7 +65,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.sportfood.di"
+    namespace = "com.sportfood.details"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
