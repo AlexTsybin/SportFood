@@ -214,6 +214,7 @@ fun HomeGraphScreen(
                                 .padding(all = 12.dp)
                         ) {
                             BottomBar(
+                                customer = customer,
                                 selected = selectedDestination,
                                 onSelect = { destination ->
                                     navController.navigate(destination.screen) {
