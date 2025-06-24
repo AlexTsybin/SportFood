@@ -22,7 +22,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "home"
+            baseName = "categories"
             isStatic = true
         }
     }
@@ -41,14 +41,9 @@ kotlin {
 
             implementation(project(":shared"))
             implementation(project(":data"))
-            implementation(project(":feature:home:products_overview"))
-            implementation(project(":feature:home:cart"))
-            implementation(project(":feature:home:categories"))
 
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-            implementation(libs.compose.navigation)
-            implementation(libs.messagebar.kmp)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -57,7 +52,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.sportfood.home"
+    namespace = "com.sportfood.categories"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
