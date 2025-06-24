@@ -40,6 +40,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sportfood.cart.CartScreen
+import com.sportfood.categories.CategoriesScreen
 import com.sportfood.shared.Alpha
 import com.sportfood.shared.BebasNeueFont
 import com.sportfood.shared.FontSize
@@ -206,7 +207,9 @@ fun HomeGraphScreen(
                             composable<Screen.Cart> {
                                 CartScreen()
                             }
-                            composable<Screen.Categories> { Text("Categories") }
+                            composable<Screen.Categories> {
+                                CategoriesScreen()
+                            }
                         }
                         Spacer(modifier = Modifier.height(12.dp ))
                         Box(
