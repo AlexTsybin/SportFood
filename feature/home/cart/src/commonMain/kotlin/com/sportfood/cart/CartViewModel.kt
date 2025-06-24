@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class CartViewModel(
     private val customerRepository: CustomerRepository,
@@ -51,6 +52,22 @@ class CartViewModel(
             customerState.isError() -> RequestState.Error(customerState.getErrorMessage())
             productState.isError() -> RequestState.Error(productState.getErrorMessage())
             else -> RequestState.Loading
+        }
+    }
+
+    fun updateCartItemQuantity(
+        id: String,
+        quantity: Int,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    ) {
+        viewModelScope.launch {
+            customerRepository.updateCartItemQuantity(
+                id = id,
+                quantity = quantity,
+                onSuccess = onSuccess,
+                onError = onError
+            )
         }
     }
 }
