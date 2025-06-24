@@ -42,6 +42,7 @@ kotlin {
             implementation(project(":shared"))
             implementation(project(":data"))
             implementation(project(":feature:home:products_overview"))
+            implementation(project(":feature:home:cart"))
 
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
