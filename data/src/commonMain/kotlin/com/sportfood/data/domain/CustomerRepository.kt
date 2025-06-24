@@ -37,5 +37,11 @@ interface CustomerRepository {
         onError: (String) -> Unit,
     )
 
+    suspend fun deleteCartItem(
+        id: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    )
+
     suspend fun signOut(): RequestState<Unit>
 }
