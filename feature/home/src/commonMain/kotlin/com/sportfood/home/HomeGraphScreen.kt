@@ -2,6 +2,7 @@ package com.sportfood.home
 
 import ContentWithMessageBar
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -23,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -39,10 +41,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.sportfood.cart.CartScreen
 import com.sportfood.categories.CategoriesScreen
-import com.sportfood.category_search.CategorySearchScreen
+import com.sportfood.home.component.BottomBar
+import com.sportfood.home.component.CustomDrawer
+import com.sportfood.home.domain.BottomBarDestination
+import com.sportfood.home.domain.CustomDrawerState
+import com.sportfood.home.domain.isOpened
+import com.sportfood.home.domain.opposite
+import com.sportfood.products_overview.ProductsOverviewScreen
 import com.sportfood.shared.Alpha
 import com.sportfood.shared.BebasNeueFont
 import com.sportfood.shared.FontSize
@@ -52,15 +59,8 @@ import com.sportfood.shared.Surface
 import com.sportfood.shared.SurfaceLighter
 import com.sportfood.shared.TextPrimary
 import com.sportfood.shared.navigation.Screen
+import com.sportfood.shared.util.RequestState
 import com.sportfood.shared.util.getScreenWidth
-import com.sportfood.home.component.BottomBar
-import com.sportfood.home.component.CustomDrawer
-import com.sportfood.home.domain.BottomBarDestination
-import com.sportfood.home.domain.CustomDrawerState
-import com.sportfood.home.domain.isOpened
-import com.sportfood.home.domain.opposite
-import com.sportfood.products_overview.ProductsOverviewScreen
-import com.sportfood.shared.domain.product.ProductCategory
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
@@ -73,9 +73,11 @@ fun HomeGraphScreen(
     navigateToAdminPanel: () -> Unit,
     navigateToDetails: (String) -> Unit,
     navigateToCategorySearch: (String) -> Unit,
+    navigateToCheckout: (String) -> Unit,
 ) {
     val viewModel = koinViewModel<HomeGraphViewModel>()
     val customer by viewModel.customer.collectAsState()
+    val totalAmount by viewModel.totalAmountFlow.collectAsState(RequestState.Loading)
     val messageBarState = rememberMessageBarState()
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState()
@@ -105,6 +107,10 @@ fun HomeGraphScreen(
     val animatedBackground by animateColorAsState(
         targetValue = if (drawerState.isOpened()) SurfaceLighter else Surface
     )
+
+    LaunchedEffect(totalAmount) {
+        println("TOTAL AMOUNT: $totalAmount")
+    }
 
     Box(
         modifier = Modifier
@@ -151,6 +157,27 @@ fun HomeGraphScreen(
                                     fontSize = FontSize.LARGE,
                                     color = TextPrimary
                                 )
+                            }
+                        },
+                        actions = {
+                            AnimatedVisibility(
+                                visible = selectedDestination == BottomBarDestination.Cart
+                            ) {
+                                IconButton(
+                                    onClick = {
+                                        if (totalAmount.isSuccess()) {
+                                            navigateToCheckout(totalAmount.getSuccessData().toString())
+                                        } else if (totalAmount.isError()) {
+                                            messageBarState.addError("Error while calculating a total amount: ${totalAmount.getErrorMessage()}")
+                                        }
+                                    }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(Resources.Icon.RightArrow),
+                                        contentDescription = "Right arrow icon",
+                                        tint = IconPrimary
+                                    )
+                                }
                             }
                         },
                         navigationIcon = {

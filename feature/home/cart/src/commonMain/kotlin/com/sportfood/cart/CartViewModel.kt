@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlin.collections.sumOf
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CartViewModel(
     private val customerRepository: CustomerRepository,
     private val productRepository: ProductRepository,
@@ -18,7 +20,6 @@ class CartViewModel(
 
     private val customer = customerRepository.readCustomerFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val products = customer.flatMapLatest { customerState ->
         if (customerState.isSuccess()) {
             val productIds = customerState.getSuccessData().cart.map { it.productId }.toSet()
