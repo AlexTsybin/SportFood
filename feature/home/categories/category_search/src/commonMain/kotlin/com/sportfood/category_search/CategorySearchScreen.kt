@@ -1,28 +1,40 @@
 package com.sportfood.category_search
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarColors
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sportfood.shared.BebasNeueFont
+import com.sportfood.shared.BorderIdle
 import com.sportfood.shared.FontSize
 import com.sportfood.shared.IconPrimary
 import com.sportfood.shared.Resources
 import com.sportfood.shared.Surface
+import com.sportfood.shared.SurfaceLighter
 import com.sportfood.shared.TextPrimary
 import com.sportfood.shared.component.InfoCard
 import com.sportfood.shared.component.LoadingCard
@@ -41,62 +53,64 @@ fun CategorySearchScreen(
     navigateBack: () -> Unit,
 ) {
     val viewModel = koinViewModel<CategorySearchViewModel>()
-    val products by viewModel.products.collectAsState()
+    val filteredProducts by viewModel.filteredProducts.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    var searchBarVisible by mutableStateOf(false)
 
     Scaffold(
         containerColor = Surface,
         topBar = {
             AnimatedContent(
-                targetState = false
+                targetState = searchBarVisible
             ) { visible ->
                 if (visible) {
-//                    SearchBar(
-//                        modifier = Modifier
-//                            .padding(horizontal = 12.dp)
-//                            .fillMaxWidth(),
-//                        inputField = {
-//                            SearchBarDefaults.InputField(
-//                                modifier = Modifier.fillMaxWidth(),
-//                                query = searchQuery,
-//                                onQueryChange = viewModel::updateSearchQuery,
-//                                expanded = false,
-//                                onExpandedChange = {},
-//                                onSearch = {},
-//                                placeholder = {
-//                                    Text(
-//                                        text = "Search here",
-//                                        fontSize = FontSize.REGULAR,
-//                                        color = TextPrimary
-//                                    )
-//                                },
-//                                trailingIcon = {
-//                                    IconButton(
-//                                        modifier = Modifier.size(14.dp),
-//                                        onClick = {
-//                                            if (searchQuery.isNotEmpty()) {
-//                                                viewModel.updateSearchQuery("")
-//                                            } else {
-//                                                searchBarVisible = false
-//                                            }
-//                                        }
-//                                    ) {
-//                                        Icon(
-//                                            painter = painterResource(Resources.Icon.Close),
-//                                            contentDescription = "Close icon",
-//                                            tint = IconPrimary
-//                                        )
-//                                    }
-//                                }
-//                            )
-//                        },
-//                        colors = SearchBarColors(
-//                            containerColor = SurfaceLighter,
-//                            dividerColor = BorderIdle
-//                        ),
-//                        expanded = false,
-//                        onExpandedChange = {},
-//                        content = {}
-//                    )
+                    SearchBar(
+                        modifier = Modifier
+                            .padding(horizontal = 12.dp)
+                            .fillMaxWidth(),
+                        inputField = {
+                            SearchBarDefaults.InputField(
+                                modifier = Modifier.fillMaxWidth(),
+                                query = searchQuery,
+                                onQueryChange = viewModel::updateSearchQuery,
+                                expanded = false,
+                                onExpandedChange = {},
+                                onSearch = {},
+                                placeholder = {
+                                    Text(
+                                        text = "Search here",
+                                        fontSize = FontSize.REGULAR,
+                                        color = TextPrimary
+                                    )
+                                },
+                                trailingIcon = {
+                                    IconButton(
+                                        modifier = Modifier.size(14.dp),
+                                        onClick = {
+                                            if (searchQuery.isNotEmpty()) {
+                                                viewModel.updateSearchQuery("")
+                                            } else {
+                                                searchBarVisible = false
+                                            }
+                                        }
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(Resources.Icon.Close),
+                                            contentDescription = "Close icon",
+                                            tint = IconPrimary
+                                        )
+                                    }
+                                }
+                            )
+                        },
+                        colors = SearchBarColors(
+                            containerColor = SurfaceLighter,
+                            dividerColor = BorderIdle
+                        ),
+                        expanded = false,
+                        onExpandedChange = {},
+                        content = {}
+                    )
                 } else {
                     TopAppBar(
                         title = {
@@ -118,7 +132,7 @@ fun CategorySearchScreen(
                         },
                         actions = {
                             IconButton(onClick = {
-//                                searchBarVisible = true
+                                searchBarVisible = true
                             }) {
                                 Icon(
                                     painter = painterResource(Resources.Icon.Search),
@@ -139,7 +153,7 @@ fun CategorySearchScreen(
             }
         }
     ) { padding ->
-        products.DisplayResult(
+        filteredProducts.DisplayResult(
             modifier = Modifier
                 .padding(
                     top = padding.calculateTopPadding(),
@@ -182,7 +196,8 @@ fun CategorySearchScreen(
                     title = "Oops!",
                     subtitle = message
                 )
-            }
+            },
+            transitionSpec = fadeIn() togetherWith fadeOut()
         )
     }
 }
