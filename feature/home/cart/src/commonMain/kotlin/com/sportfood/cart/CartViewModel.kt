@@ -6,11 +6,9 @@ import com.sportfood.data.domain.CustomerRepository
 import com.sportfood.data.domain.ProductRepository
 import com.sportfood.shared.util.RequestState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class CartViewModel(
@@ -25,7 +23,7 @@ class CartViewModel(
         if (customerState.isSuccess()) {
             val productIds = customerState.getSuccessData().cart.map { it.productId }.toSet()
             if (productIds.isNotEmpty()) {
-                productRepository.readProductsByIds(productIds.toList())
+                productRepository.readProductsByIdsFlow(productIds.toList())
             } else
                 flowOf(RequestState.Success(emptyList()))
         } else if (customerState.isError()) {

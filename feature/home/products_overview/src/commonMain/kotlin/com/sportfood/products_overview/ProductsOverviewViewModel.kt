@@ -6,14 +6,21 @@ import com.sportfood.data.domain.ProductRepository
 import com.sportfood.shared.util.RequestState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.stateIn
 
 class ProductsOverviewViewModel(
     private val productRepository: ProductRepository,
 ) : ViewModel() {
 
-    private val newProducts = productRepository.readNewProducts()
-    private val discountedProducts = productRepository.readDiscountedProducts()
+    private val newProducts = productRepository.readNewProductsFlow()
+    private val discountedProducts = productRepository.readDiscountedProductsFlow()
+
+    init {
+        newProducts.combine(discountedProducts) { new, discounted ->
+
+        }.launchIn(viewModelScope)
+    }
 
     val products = combine(
         newProducts,

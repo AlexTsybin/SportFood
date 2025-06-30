@@ -22,7 +22,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "di"
+            baseName = "category_search"
             isStatic = true
         }
     }
@@ -39,17 +39,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation(project(":feature:auth"))
-            implementation(project(":feature:home"))
-            implementation(project(":feature:profile"))
-            implementation(project(":feature:details"))
-            implementation(project(":feature:admin_panel"))
-            implementation(project(":feature:admin_panel:manage_product"))
-            implementation(project(":feature:home:products_overview"))
-            implementation(project(":feature:home:cart"))
-            implementation(project(":feature:home:categories:category_search"))
+            implementation(project(":shared"))
             implementation(project(":data"))
-            implementation(libs.koin.core)
+
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
         }
@@ -60,7 +52,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.sportfood.di"
+    namespace = "com.sportfood.category_search"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

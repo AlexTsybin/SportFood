@@ -7,11 +7,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.sportfood.admin_panel.AdminPanelScreen
 import com.sportfood.auth.AuthScreen
+import com.sportfood.category_search.CategorySearchScreen
 import com.sportfood.details.DetailsScreen
 import com.sportfood.shared.navigation.Screen
 import com.sportfood.home.HomeGraphScreen
 import com.sportfood.manage_product.ManageProductScreen
 import com.sportfood.profile.ProfileScreen
+import com.sportfood.shared.domain.product.ProductCategory
 
 @Composable
 fun SetupNavGraph(
@@ -46,6 +48,9 @@ fun SetupNavGraph(
                 },
                 navigateToDetails = { productId ->
                     navController.navigate(Screen.Details(id = productId))
+                },
+                navigateToCategorySearch = { categoryName ->
+                    navController.navigate(Screen.CategorySearch(categoryName))
                 }
             )
         }
@@ -80,6 +85,18 @@ fun SetupNavGraph(
                 navigateBack = {
                     navController.navigateUp()
                 }
+            )
+        }
+        composable<Screen.CategorySearch> {
+            val category = ProductCategory.valueOf(
+                it.toRoute<Screen.CategorySearch>().category
+            )
+            CategorySearchScreen(
+                category = category,
+                navigateToDetails = { id ->
+                    navController.navigate(Screen.Details(id))
+                },
+                navigateBack = { navController.navigateUp() }
             )
         }
     }

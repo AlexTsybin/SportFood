@@ -39,8 +39,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.sportfood.cart.CartScreen
 import com.sportfood.categories.CategoriesScreen
+import com.sportfood.category_search.CategorySearchScreen
 import com.sportfood.shared.Alpha
 import com.sportfood.shared.BebasNeueFont
 import com.sportfood.shared.FontSize
@@ -58,6 +60,7 @@ import com.sportfood.home.domain.CustomDrawerState
 import com.sportfood.home.domain.isOpened
 import com.sportfood.home.domain.opposite
 import com.sportfood.products_overview.ProductsOverviewScreen
+import com.sportfood.shared.domain.product.ProductCategory
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
@@ -69,6 +72,7 @@ fun HomeGraphScreen(
     navigateToProfile: () -> Unit,
     navigateToAdminPanel: () -> Unit,
     navigateToDetails: (String) -> Unit,
+    navigateToCategorySearch: (String) -> Unit,
 ) {
     val viewModel = koinViewModel<HomeGraphViewModel>()
     val customer by viewModel.customer.collectAsState()
@@ -208,7 +212,9 @@ fun HomeGraphScreen(
                                 CartScreen()
                             }
                             composable<Screen.Categories> {
-                                CategoriesScreen()
+                                CategoriesScreen(
+                                    navigateToCategorySearch = navigateToCategorySearch
+                                )
                             }
                         }
                         Spacer(modifier = Modifier.height(12.dp ))

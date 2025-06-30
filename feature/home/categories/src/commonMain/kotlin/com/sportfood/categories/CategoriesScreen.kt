@@ -12,7 +12,8 @@ import com.sportfood.shared.domain.product.ProductCategory
 
 @Composable
 fun CategoriesScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToCategorySearch: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -23,7 +24,7 @@ fun CategoriesScreen(
         ProductCategory.entries.forEach { category ->
             CategoryCard(
                 category = category,
-                onClick = {}
+                onClick = { navigateToCategorySearch(category.name) }
             )
         }
     }

@@ -3,6 +3,7 @@ package com.sportfood.di
 import com.sportfood.admin_panel.AdminPanelViewModel
 import com.sportfood.auth.AuthViewModel
 import com.sportfood.cart.CartViewModel
+import com.sportfood.category_search.CategorySearchViewModel
 import com.sportfood.data.AdminRepositoryImpl
 import com.sportfood.data.CustomerRepositoryImpl
 import com.sportfood.data.ProductRepositoryImpl
@@ -32,6 +33,7 @@ val sharedModule = module {
     viewModelOf(::ProductsOverviewViewModel)
     viewModelOf(::DetailsViewModel)
     viewModelOf(::CartViewModel)
+    viewModelOf(::CategorySearchViewModel)
 }
 
 expect val targetModule: Module

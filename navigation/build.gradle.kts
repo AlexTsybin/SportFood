@@ -47,6 +47,7 @@ kotlin {
             implementation(project(":feature:details"))
             implementation(project(":feature:admin_panel"))
             implementation(project(":feature:admin_panel:manage_product"))
+            implementation(project(":feature:home:categories:category_search"))
             implementation(libs.compose.navigation)
             implementation(libs.kotlinx.serialization)
         }

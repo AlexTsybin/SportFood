@@ -20,7 +20,7 @@ class DetailsViewModel(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    val product = productRepository.readProductById(
+    val product = productRepository.readProductByIdFlow(
         savedStateHandle.get<String>("id") ?: ""
     ).stateIn(
         scope = viewModelScope,
