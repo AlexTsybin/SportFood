@@ -49,6 +49,7 @@ kotlin {
             implementation(project(":feature:admin_panel:manage_product"))
             implementation(project(":feature:home:categories:category_search"))
             implementation(project(":feature:home:cart:checkout"))
+            implementation(project(":feature:payment_completed"))
             implementation(libs.compose.navigation)
             implementation(libs.kotlinx.serialization)
         }

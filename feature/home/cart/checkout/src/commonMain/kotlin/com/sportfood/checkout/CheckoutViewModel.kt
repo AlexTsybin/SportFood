@@ -3,11 +3,14 @@ package com.sportfood.checkout
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sportfood.data.domain.CustomerRepository
+import com.sportfood.data.domain.OrderRepository
 import com.sportfood.shared.domain.Country
 import com.sportfood.shared.domain.Customer
+import com.sportfood.shared.domain.Order
 import com.sportfood.shared.domain.PhoneNumber
 import com.sportfood.shared.util.RequestState
 import kotlinx.coroutines.flow.collectLatest
@@ -16,6 +19,8 @@ import kotlin.ranges.contains
 
 class CheckoutViewModel(
     private val customerRepository: CustomerRepository,
+    private val orderRepository: OrderRepository,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     var screenReady: RequestState<Unit> by mutableStateOf(RequestState.Loading)
@@ -48,7 +53,8 @@ class CheckoutViewModel(
                         phoneNumber = fetchedCustomer.phoneNumber,
                         country = Country.entries.firstOrNull { country ->
                             country.dialCode == fetchedCustomer.phoneNumber?.dialCode
-                        } ?: Country.Serbia
+                        } ?: Country.Serbia,
+                        cart = fetchedCustomer.cart,
                     )
                     screenReady = RequestState.Success(data = Unit)
                 } else if (data.isError()) {
@@ -96,6 +102,21 @@ class CheckoutViewModel(
         )
     }
 
+    fun payOnDelivery(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    ) {
+        updateCustomer(
+            onSuccess = {
+                createOrder(
+                    onSuccess = onSuccess,
+                    onError = onError
+                )
+            },
+            onError = onError
+        )
+    }
+
     fun updateCustomer(
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
@@ -111,6 +132,23 @@ class CheckoutViewModel(
                     postalCode = screenState.postalCode,
                     address = screenState.address,
                     phoneNumber = screenState.phoneNumber,
+                ),
+                onSuccess = onSuccess,
+                onError = onError
+            )
+        }
+    }
+
+    private fun createOrder(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    ) {
+        viewModelScope.launch {
+            orderRepository.createOrder(
+                order = Order(
+                    customerId = screenState.id,
+                    items = screenState.cart,
+                    totalAmount = savedStateHandle.get<String>("totalAmount")?.toDoubleOrNull() ?: 0.0
                 ),
                 onSuccess = onSuccess,
                 onError = onError

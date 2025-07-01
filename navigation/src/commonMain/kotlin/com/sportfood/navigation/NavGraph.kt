@@ -13,6 +13,7 @@ import com.sportfood.details.DetailsScreen
 import com.sportfood.shared.navigation.Screen
 import com.sportfood.home.HomeGraphScreen
 import com.sportfood.manage_product.ManageProductScreen
+import com.sportfood.payment_completed.PaymentCompletedScreen
 import com.sportfood.profile.ProfileScreen
 import com.sportfood.shared.domain.product.ProductCategory
 
@@ -107,7 +108,26 @@ fun SetupNavGraph(
             val totalAmount = it.toRoute<Screen.Checkout>().totalAmount
             CheckoutScreen(
                 totalAmount = totalAmount.toDoubleOrNull() ?: 0.0,
-                navigateBack = { navController.navigateUp() }
+                navigateBack = { navController.navigateUp() },
+                navigateToPaymentCompleted = { isSuccess, error ->
+                    navController.navigate(Screen.PaymentCompleted(isSuccess, error))
+                }
+            )
+        }
+        composable<Screen.PaymentCompleted> {
+            val isSuccess = it.toRoute<Screen.PaymentCompleted>().isSuccess
+            val error = it.toRoute<Screen.PaymentCompleted>().error
+            PaymentCompletedScreen(
+                isSuccess = isSuccess,
+                error = error,
+                navigateBack = {
+                    navController.navigate(Screen.HomeGraph) {
+                        launchSingleTop = true
+
+                        // Clear backstack completely
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
     }

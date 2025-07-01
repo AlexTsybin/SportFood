@@ -11,6 +11,7 @@ import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlin.collections.mapOf
 
 class CustomerRepositoryImpl : CustomerRepository {
 
@@ -161,7 +162,7 @@ class CustomerRepositoryImpl : CustomerRepository {
                 onError("User is not available")
             }
         } catch (e: Exception) {
-            onError("Error while adding a product to cart ${e.message}")
+            onError("Error while adding a product to cart: ${e.message}")
         }
     }
 
@@ -197,7 +198,7 @@ class CustomerRepositoryImpl : CustomerRepository {
                 onError("User is not available")
             }
         } catch (e: Exception) {
-            onError("Error while adding a product to cart ${e.message}")
+            onError("Error while updating product quantity in cart: ${e.message}")
         }
     }
 
@@ -227,7 +228,34 @@ class CustomerRepositoryImpl : CustomerRepository {
                 onError("User is not available")
             }
         } catch (e: Exception) {
-            onError("Error while adding a product to cart ${e.message}")
+            onError("Error while deleting a product from cart: ${e.message}")
+        }
+    }
+
+    override suspend fun deleteAllCartItems(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+                val customerCollection = database.collection(collectionPath = "customer")
+                val existingCustomer = customerCollection
+                    .document(userId)
+                    .get()
+                if (existingCustomer.exists) {
+                    customerCollection.document(userId)
+                        .update(data = mapOf("cart" to emptyList<List<CartItem>>()))
+                    onSuccess()
+                } else {
+                    onError("Customer not found")
+                }
+            } else {
+                onError("User is not available")
+            }
+        } catch (e: Exception) {
+            onError("Error while deleting all products from cart: ${e.message}")
         }
     }
 

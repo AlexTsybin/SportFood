@@ -7,9 +7,11 @@ import com.sportfood.category_search.CategorySearchViewModel
 import com.sportfood.checkout.CheckoutViewModel
 import com.sportfood.data.AdminRepositoryImpl
 import com.sportfood.data.CustomerRepositoryImpl
+import com.sportfood.data.OrderRepositoryImpl
 import com.sportfood.data.ProductRepositoryImpl
 import com.sportfood.data.domain.AdminRepository
 import com.sportfood.data.domain.CustomerRepository
+import com.sportfood.data.domain.OrderRepository
 import com.sportfood.data.domain.ProductRepository
 import com.sportfood.details.DetailsViewModel
 import com.sportfood.home.HomeGraphViewModel
@@ -26,6 +28,7 @@ val sharedModule = module {
     single<CustomerRepository> { CustomerRepositoryImpl() } 
     single<AdminRepository> { AdminRepositoryImpl() }
     single<ProductRepository> { ProductRepositoryImpl() }
+    single<OrderRepository> { OrderRepositoryImpl(get()) }
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
     viewModelOf(::ProfileViewModel)
