@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.sportfood.shared.Alpha
 import com.sportfood.shared.ButtonDisabled
 import com.sportfood.shared.ButtonPrimary
+import com.sportfood.shared.ButtonSecondary
 import com.sportfood.shared.FontSize
 import com.sportfood.shared.TextPrimary
 import org.jetbrains.compose.resources.DrawableResource
@@ -28,6 +29,7 @@ fun PrimaryButton(
     text: String,
     icon: DrawableResource? = null,
     enabled: Boolean = true,
+    secondary: Boolean = false,
     onClick: () -> Unit,
 ) {
     Button(
@@ -36,7 +38,7 @@ fun PrimaryButton(
         enabled = enabled,
         shape = RoundedCornerShape(size = 12.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = ButtonPrimary,
+            containerColor = if (secondary) ButtonSecondary else ButtonPrimary,
             contentColor = TextPrimary,
             disabledContainerColor = ButtonDisabled,
             disabledContentColor = TextPrimary.copy(alpha = Alpha.DISABLED)

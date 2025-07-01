@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import com.sportfood.admin_panel.AdminPanelScreen
 import com.sportfood.auth.AuthScreen
 import com.sportfood.category_search.CategorySearchScreen
+import com.sportfood.checkout.CheckoutScreen
 import com.sportfood.details.DetailsScreen
 import com.sportfood.shared.navigation.Screen
 import com.sportfood.home.HomeGraphScreen
@@ -103,7 +104,11 @@ fun SetupNavGraph(
             )
         }
         composable<Screen.Checkout> {
-
+            val totalAmount = it.toRoute<Screen.Checkout>().totalAmount
+            CheckoutScreen(
+                totalAmount = totalAmount.toDoubleOrNull() ?: 0.0,
+                navigateBack = { navController.navigateUp() }
+            )
         }
     }
 }
