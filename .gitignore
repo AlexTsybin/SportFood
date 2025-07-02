@@ -23,6 +23,7 @@ captures
 *.keystore
 bin/
 gen/
+*.firebaserc
 *.log
 signing.properties
 *.apk
