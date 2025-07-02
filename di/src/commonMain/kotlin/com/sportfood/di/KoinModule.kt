@@ -5,6 +5,7 @@ import com.sportfood.auth.AuthViewModel
 import com.sportfood.cart.CartViewModel
 import com.sportfood.category_search.CategorySearchViewModel
 import com.sportfood.checkout.CheckoutViewModel
+import com.sportfood.checkout.domain.PaypalApi
 import com.sportfood.data.AdminRepositoryImpl
 import com.sportfood.data.CustomerRepositoryImpl
 import com.sportfood.data.OrderRepositoryImpl
@@ -29,6 +30,7 @@ val sharedModule = module {
     single<AdminRepository> { AdminRepositoryImpl() }
     single<ProductRepository> { ProductRepositoryImpl() }
     single<OrderRepository> { OrderRepositoryImpl(get()) }
+    single<PaypalApi> { PaypalApi() }
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
     viewModelOf(::ProfileViewModel)
