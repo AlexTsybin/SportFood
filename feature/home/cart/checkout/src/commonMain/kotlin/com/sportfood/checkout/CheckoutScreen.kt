@@ -120,18 +120,33 @@ fun CheckoutScreen(
                     phoneNumber = screenState.phoneNumber?.number,
                     onPhoneNumberChange = viewModel::updatePhoneNumber
                 )
-                PrimaryButton(
-                    text = "Pay on Delivery",
-                    icon = Resources.Icon.ShoppingCart,
-                    secondary = true,
-                    enabled = isFormValid,
-                    onClick = {
-                        viewModel.payOnDelivery(
-                            onSuccess = { navigateToPaymentCompleted(true, null) },
-                            onError = { message -> navigateToPaymentCompleted(null, message) }
-                        )
-                    }
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    PrimaryButton(
+                        text = "Pay with PayPal",
+                        icon = Resources.Image.PaypalLogo,
+                        enabled = isFormValid,
+                        onClick = {
+                            viewModel.payWithPayPal(
+                                onSuccess = {  },
+                                onError = { message -> messageBarState.addError(message) }
+                            )
+                        }
+                    )
+                    PrimaryButton(
+                        text = "Pay on Delivery",
+                        icon = Resources.Icon.ShoppingCart,
+                        secondary = true,
+                        enabled = isFormValid,
+                        onClick = {
+                            viewModel.payOnDelivery(
+                                onSuccess = { navigateToPaymentCompleted(true, null) },
+                                onError = { message -> navigateToPaymentCompleted(null, message) }
+                            )
+                        }
+                    )
+                }
             }
         }
     }

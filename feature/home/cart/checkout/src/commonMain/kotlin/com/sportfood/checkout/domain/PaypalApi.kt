@@ -2,6 +2,7 @@ package com.sportfood.checkout.domain
 
 import com.sportfood.shared.Constants.PAYPAL_AUTH_ENDPOINT
 import com.sportfood.shared.Constants.PAYPAL_AUTH_KEY
+import com.sportfood.shared.Constants.PAYPAL_CHECKOUT_ENDPOINT
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -18,6 +19,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.Json
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 class PaypalApi {
 
@@ -26,7 +29,7 @@ class PaypalApi {
             json(
                 Json {
                     ignoreUnknownKeys = true
-                    encodeDefaults = true
+                    encodeDefaults = true // Without that default values will not be included in request
                 }
             )
         }
@@ -58,6 +61,51 @@ class PaypalApi {
             }
         } catch (e: Exception) {
             onError("Error while fetching anAccess Token: ${e.message}")
+        }
+    }
+
+    @OptIn(ExperimentalUuidApi::class)
+    suspend fun beginCheckout(
+        amount: Amount,
+        fullName: String,
+        shippingAddress: ShippingAddress,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    ) {
+        if (accessToken.value.isEmpty()) {
+            onError("Error while starting checkout: Access Token is empty")
+            return
+        }
+
+        val uniqueId = Uuid.random().toHexString()
+        val orderRequest = OrderRequest(
+            purchaseUnits = listOf(
+                PurchaseUnit(
+                    referenceId = uniqueId,
+                    amount = amount,
+                    shipping = Shipping(
+                        name = Name(fullName = fullName),
+                        address = shippingAddress
+                    )
+                )
+            )
+        )
+
+        val response = client.post(urlString = PAYPAL_CHECKOUT_ENDPOINT) {
+            headers {
+                append(HttpHeaders.Authorization, "Bearer ${accessToken.value}")
+                append(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                append("PayPal-Request-Id", uniqueId)
+            }
+            setBody(orderRequest)
+        }
+
+        if (response.status == HttpStatusCode.OK) {
+            val orderResponse = response.body<OrderResponse>()
+            val payerLink = orderResponse.links.firstOrNull { it.rel == "payer-action" }?.href ?: ""
+            onSuccess()
+        } else {
+            onError("Error while starting checkout: ${response.status} - ${response.bodyAsText()}")
         }
     }
 }
