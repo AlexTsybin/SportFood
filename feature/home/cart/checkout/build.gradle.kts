@@ -59,6 +59,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization)
+            implementation(libs.browser.kmp)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

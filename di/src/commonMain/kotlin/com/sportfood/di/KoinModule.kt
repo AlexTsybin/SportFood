@@ -19,6 +19,7 @@ import com.sportfood.home.HomeGraphViewModel
 import com.sportfood.manage_product.ManageProductViewModel
 import com.sportfood.products_overview.ProductsOverviewViewModel
 import com.sportfood.profile.ProfileViewModel
+import com.sportfood.shared.util.IntentHandler
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -31,6 +32,7 @@ val sharedModule = module {
     single<ProductRepository> { ProductRepositoryImpl() }
     single<OrderRepository> { OrderRepositoryImpl(get()) }
     single<PaypalApi> { PaypalApi() }
+    single<IntentHandler> { IntentHandler() }
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
     viewModelOf(::ProfileViewModel)

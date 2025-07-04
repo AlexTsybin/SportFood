@@ -20,6 +20,8 @@ import com.sportfood.shared.ButtonDisabled
 import com.sportfood.shared.ButtonPrimary
 import com.sportfood.shared.ButtonSecondary
 import com.sportfood.shared.FontSize
+import com.sportfood.shared.IconPrimary
+import com.sportfood.shared.Resources
 import com.sportfood.shared.TextPrimary
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -51,7 +53,8 @@ fun PrimaryButton(
                 modifier = Modifier.size(14.dp),
                 painter = painterResource(icon),
                 contentDescription = "Button icon",
-                tint = Color.Unspecified
+                tint = if (icon == Resources.Image.PaypalLogo) Color.Unspecified
+                else IconPrimary
             )
             Spacer(modifier = Modifier.width(12.dp))
         }

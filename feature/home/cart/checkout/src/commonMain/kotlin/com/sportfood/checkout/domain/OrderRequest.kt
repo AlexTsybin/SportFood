@@ -1,5 +1,7 @@
 package com.sportfood.checkout.domain
 
+import com.sportfood.shared.Constants.CANCEL_URL
+import com.sportfood.shared.Constants.RETURN_URL
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -82,9 +84,9 @@ data class ExperienceContext(
     @SerialName("user_action")
     val userAction: String = "PAY_NOW",
     @SerialName("return_url")
-    val returnUrl : String = "",
+    val returnUrl : String = RETURN_URL,
     @SerialName("cancel_url")
-    val cancelUrl: String = ""
+    val cancelUrl: String = CANCEL_URL
 )
 
 @Serializable

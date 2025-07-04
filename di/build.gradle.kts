@@ -50,6 +50,7 @@ kotlin {
             implementation(project(":feature:home:cart:checkout"))
             implementation(project(":feature:home:categories:category_search"))
             implementation(project(":data"))
+            implementation(project(":shared"))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
