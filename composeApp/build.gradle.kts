@@ -25,6 +25,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export(libs.kmp.notifier)
 
 //            export(compose.material3)
         }
@@ -55,6 +56,7 @@ kotlin {
             implementation(libs.auth.kmp)
             implementation(libs.firebase.app)
             implementation(libs.koin.compose)
+            api(libs.kmp.notifier)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
