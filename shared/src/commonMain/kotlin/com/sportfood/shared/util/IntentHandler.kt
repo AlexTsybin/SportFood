@@ -4,6 +4,7 @@ import com.sportfood.shared.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+// It doesn't work for iOS properly
 class IntentHandler {
 
     private val _navigateTo = MutableStateFlow<Screen?>(null)

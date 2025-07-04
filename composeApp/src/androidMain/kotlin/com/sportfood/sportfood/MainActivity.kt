@@ -7,15 +7,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.sportfood.shared.util.IntentHandler
-import org.koin.android.ext.android.inject
+import com.sportfood.shared.util.PreferencesRepository
 
 class MainActivity : ComponentActivity() {
 
-    val intentHandler: IntentHandler by inject()
+//    val intentHandler: IntentHandler by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -50,10 +47,16 @@ class MainActivity : ComponentActivity() {
         println("SPORTFOOD INTENT CANCELLED: $isCancelled")
         println("SPORTFOOD INTENT TOKEN: $token")
 
-        intentHandler.navigateToPaymentCompleted(
+        PreferencesRepository.savePayPalData(
             isSuccess = isSuccess?.toBooleanStrictOrNull(),
             error = if (isCancelled == "null") null else "Payment has been canceled",
             token = token
         )
+
+//        intentHandler.navigateToPaymentCompleted(
+//            isSuccess = isSuccess?.toBooleanStrictOrNull(),
+//            error = if (isCancelled == "null") null else "Payment has been canceled",
+//            token = token
+//        )
     }
 }

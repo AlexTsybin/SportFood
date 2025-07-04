@@ -20,6 +20,7 @@ import com.sportfood.payment_completed.PaymentCompletedScreen
 import com.sportfood.profile.ProfileScreen
 import com.sportfood.shared.domain.product.ProductCategory
 import com.sportfood.shared.util.IntentHandler
+import com.sportfood.shared.util.PreferencesRepository
 import org.koin.compose.koinInject
 
 @Composable
@@ -27,14 +28,26 @@ fun SetupNavGraph(
     startDestination: Screen = Screen.Auth,
 ) {
     val navController = rememberNavController()
-    val intentHandler = koinInject<IntentHandler>()
-    val navigateTo by intentHandler.navigateTo.collectAsState()
+//    val intentHandler = koinInject<IntentHandler>()
+//    val navigateTo by intentHandler.navigateTo.collectAsState()
+//
+//    LaunchedEffect(navigateTo) {
+//        navigateTo?.let { paymentCompleted ->
+//            println("NAVIGATING TO PAYMENT COMPLETED")
+//            navController.navigate(paymentCompleted)
+//            intentHandler.resetNavigation()
+//        }
+//    }
 
-    LaunchedEffect(navigateTo) {
-        navigateTo?.let { paymentCompleted ->
-            println("NAVIGATING TO PAYMENT COMPLETED")
-            navController.navigate(paymentCompleted)
-            intentHandler.resetNavigation()
+    val preferencesData by PreferencesRepository.readPayPalDataFlow()
+        .collectAsState(initial = null)
+
+    LaunchedEffect(preferencesData) {
+        preferencesData?.let { paymentCompleted ->
+            if (paymentCompleted.token != null) {
+                navController.navigate(paymentCompleted)
+                PreferencesRepository.reset()
+            }
         }
     }
 
