@@ -44,13 +44,16 @@ class MainActivity : ComponentActivity() {
 
         val isSuccess = uri?.getQueryParameter("success")
         val isCancelled = uri?.getQueryParameter("cancel")
+        val token = uri?.getQueryParameter("token")
 
         println("SPORTFOOD INTENT SUCCESS: $isSuccess")
         println("SPORTFOOD INTENT CANCELLED: $isCancelled")
+        println("SPORTFOOD INTENT TOKEN: $token")
 
         intentHandler.navigateToPaymentCompleted(
             isSuccess = isSuccess?.toBooleanStrictOrNull(),
-            error = if (isCancelled == "null") null else "Payment has been canceled"
+            error = if (isCancelled == "null") null else "Payment has been canceled",
+            token = token
         )
     }
 }

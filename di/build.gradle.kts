@@ -49,6 +49,7 @@ kotlin {
             implementation(project(":feature:home:cart"))
             implementation(project(":feature:home:cart:checkout"))
             implementation(project(":feature:home:categories:category_search"))
+            implementation(project(":feature:payment_completed"))
             implementation(project(":data"))
             implementation(project(":shared"))
             implementation(libs.koin.core)

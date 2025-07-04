@@ -131,11 +131,7 @@ fun SetupNavGraph(
             )
         }
         composable<Screen.PaymentCompleted> {
-            val isSuccess = it.toRoute<Screen.PaymentCompleted>().isSuccess
-            val error = it.toRoute<Screen.PaymentCompleted>().error
             PaymentCompletedScreen(
-                isSuccess = isSuccess,
-                error = error,
                 navigateBack = {
                     navController.navigate(Screen.HomeGraph) {
                         launchSingleTop = true

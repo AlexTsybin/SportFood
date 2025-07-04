@@ -17,6 +17,7 @@ import com.sportfood.data.domain.ProductRepository
 import com.sportfood.details.DetailsViewModel
 import com.sportfood.home.HomeGraphViewModel
 import com.sportfood.manage_product.ManageProductViewModel
+import com.sportfood.payment_completed.PaymentViewModel
 import com.sportfood.products_overview.ProductsOverviewViewModel
 import com.sportfood.profile.ProfileViewModel
 import com.sportfood.shared.util.IntentHandler
@@ -43,6 +44,7 @@ val sharedModule = module {
     viewModelOf(::CartViewModel)
     viewModelOf(::CategorySearchViewModel)
     viewModelOf(::CheckoutViewModel)
+    viewModelOf(::PaymentViewModel)
 }
 
 expect val targetModule: Module
